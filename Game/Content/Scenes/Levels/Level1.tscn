@@ -1,0 +1,113 @@
+[gd_scene load_steps=15 format=3 uid="uid://dkqde52uvqb1x"]
+
+[ext_resource type="PackedScene" uid="uid://d3oghssyunoms" path="res://Game/Content/Prefabs/Core/Player.tscn" id="1_2ktsc"]
+[ext_resource type="Texture2D" uid="uid://bujf1wvenfh" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Door_Chemistry.png" id="1_vmjww"]
+[ext_resource type="Texture2D" uid="uid://be3fprgxjn6in" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Door_2A.png" id="2_7lase"]
+[ext_resource type="Texture2D" uid="uid://cxjmcuv0swula" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Wall_Back.png" id="6_cjokg"]
+[ext_resource type="Texture2D" uid="uid://esx5r708wqws" path="res://Game/Content/Assets/Textures/Scenes/Room/Wall_Back.png" id="7_k30r7"]
+[ext_resource type="Texture2D" uid="uid://c22l7ei32yqip" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Floor.png" id="8_00duj"]
+[ext_resource type="Texture2D" uid="uid://cxcqwtgtarox3" path="res://Game/Content/Assets/Textures/Scenes/Room/Floor.png" id="9_3h54f"]
+[ext_resource type="Texture2D" uid="uid://dpls0hj2injvc" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Wall_L.png" id="10_gnk5q"]
+[ext_resource type="Texture2D" uid="uid://0m8ufvruha7s" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Wall_R.png" id="11_tiihy"]
+[ext_resource type="Texture2D" uid="uid://cl28ionq642ly" path="res://Game/Content/Assets/Textures/Scenes/Room/Wall_L.png" id="12_m6vfv"]
+[ext_resource type="Texture2D" uid="uid://buj26p7y338hd" path="res://Game/Content/Assets/Textures/Scenes/Room/Wall_R.png" id="13_utypy"]
+[ext_resource type="Texture2D" uid="uid://bveld4slufvrr" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Door_L.png" id="14_bkb60"]
+[ext_resource type="Texture2D" uid="uid://c0f8rfe1byofp" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Door_R.png" id="15_v7xld"]
+[ext_resource type="PackedScene" uid="uid://nmbijne5lago" path="res://Game/Content/Prefabs/UI/HUD/HUD.tscn" id="21_bjwb2"]
+
+[node name="Root" type="Node2D"]
+
+[node name="Characters" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="Characters" instance=ExtResource("1_2ktsc")]
+position = Vector2(4075, 202)
+WalkSpeed = 525.0
+RunSpeed = 800.0
+MaxStamina = 10000.0
+
+[node name="AI" type="Node2D" parent="Characters"]
+y_sort_enabled = true
+
+[node name="Interactive" type="Node2D" parent="."]
+
+[node name="Scene" type="Node2D" parent="."]
+
+[node name="Room" type="Node2D" parent="Scene"]
+position = Vector2(-7341, -372)
+
+[node name="WallBack" type="Sprite2D" parent="Scene/Room"]
+position = Vector2(-1432, -4400)
+texture = ExtResource("7_k30r7")
+
+[node name="Floor_1" type="Sprite2D" parent="Scene/Room"]
+position = Vector2(-4529, -3189)
+texture = ExtResource("9_3h54f")
+offset = Vector2(1729, 489)
+
+[node name="Floor_2" type="Sprite2D" parent="Scene/Room"]
+position = Vector2(-4529, -3189)
+texture = ExtResource("9_3h54f")
+offset = Vector2(4729, 489)
+
+[node name="Wall_L" type="Sprite2D" parent="Scene/Room"]
+position = Vector2(-3340, -3650)
+texture = ExtResource("12_m6vfv")
+
+[node name="Wall_R" type="Sprite2D" parent="Scene/Room"]
+position = Vector2(740, -3650)
+texture = ExtResource("13_utypy")
+
+[node name="Level_1" type="Node2D" parent="Scene"]
+
+[node name="Door_2A" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(5122, -950)
+texture = ExtResource("2_7lase")
+
+[node name="Door_Chimestry" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(1125, -950)
+texture = ExtResource("1_vmjww")
+
+[node name="WallBack_1" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(1128, -1149)
+texture = ExtResource("6_cjokg")
+
+[node name="WallBack_2" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(5128, -1149)
+texture = ExtResource("6_cjokg")
+
+[node name="Floor_1" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(-120, 631)
+scale = Vector2(1, 1.88)
+texture = ExtResource("8_00duj")
+
+[node name="Floor_2" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(3120, 631)
+scale = Vector2(1, 1.88)
+texture = ExtResource("8_00duj")
+
+[node name="Floor_3" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(6360, 631)
+scale = Vector2(1, 1.88)
+texture = ExtResource("8_00duj")
+
+[node name="Wall_L" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(-1020, -599)
+texture = ExtResource("10_gnk5q")
+
+[node name="Wall_R" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(7260, -600)
+texture = ExtResource("11_tiihy")
+
+[node name="Door_L" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(-972, -364)
+texture = ExtResource("14_bkb60")
+
+[node name="Door_R" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(6903, -608)
+texture = ExtResource("15_v7xld")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="UI" instance=ExtResource("21_bjwb2")]
+visible = false

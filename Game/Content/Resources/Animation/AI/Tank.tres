@@ -1,0 +1,103 @@
+[gd_resource type="SpriteFrames" load_steps=3 format=3 uid="uid://b5rqyejmo6t8a"]
+
+[ext_resource type="Texture2D" uid="uid://dlkpcrylud0ms" path="res://Game/Content/Assets/Textures/Animation/AI/Tank/Attack/Tank_Attack.png" id="1_mkx6l"]
+[ext_resource type="Texture2D" uid="uid://icbwoku58eoo" path="res://Game/Content/Assets/Textures/Animation/AI/Tank/Idle/Tank_Idle.png" id="2_r3x8w"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_mkx6l")
+}],
+"loop": true,
+"name": &"Attack_Backward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_mkx6l")
+}],
+"loop": true,
+"name": &"Attack_Forward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_mkx6l")
+}],
+"loop": true,
+"name": &"Attack_Left",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_mkx6l")
+}],
+"loop": true,
+"name": &"Attack_Right",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_r3x8w")
+}],
+"loop": true,
+"name": &"Idle_Backward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_r3x8w")
+}],
+"loop": true,
+"name": &"Idle_Forward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_r3x8w")
+}],
+"loop": true,
+"name": &"Idle_Left",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_r3x8w")
+}],
+"loop": true,
+"name": &"Idle_Right",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_r3x8w")
+}],
+"loop": true,
+"name": &"Run_Backward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_r3x8w")
+}],
+"loop": true,
+"name": &"Run_Forward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_r3x8w")
+}],
+"loop": true,
+"name": &"Run_Left",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_r3x8w")
+}],
+"loop": true,
+"name": &"Run_Right",
+"speed": 30.0
+}]

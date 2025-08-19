@@ -1,0 +1,73 @@
+﻿using Game.Core.FSM;
+using Game.Logic.Misc;
+using Game.Utils;
+using Godot;
+
+namespace Game.Logic.AI.Aimer.FSM
+{
+    [Tool]
+    public partial class AvoidAttackState : State
+    {
+        public enum EAttackWaitType
+        {
+            PreWait,
+            AnimationWait,
+            PostWait
+        }
+
+        #region PRIVATE FIELDS
+        private Character _character;
+        #endregion
+
+        #region EDITOR FIELDS
+        [ExportGroup("Base")]
+        [Export]
+        public PackedScene Projectile;
+        #endregion
+
+        #region FSM STATE METHODS
+        [StateMethod]
+        public override void _StateReady()
+        {
+            base._StateReady();
+
+            _character = Root<Character>();
+        }
+
+        [StateMethod]
+        public override void _StateEnter()
+        {
+            base._StateEnter();
+
+            _character.MoveComponent.Velocity = Vector2.Zero;
+
+            var projectile = (AimProjectile)Projectile.Instantiate();
+            projectile.GlobalPosition = Player.Character.Instance.GlobalPosition;
+            projectile.LifeTimer.WaitTime = 0.1f;
+            projectile.OnLifeTimeout += self =>
+            {
+                var bodies = ((AimProjectile)self).Area.GetOverlappingBodies();
+
+                foreach (var body in bodies)
+                {
+                    if (body is AttackBody { Root: Player.Character playerCharacter, Type: "All" })
+                    {
+                        playerCharacter.CanUpdateInput = false;
+                        playerCharacter.MoveComponent.ApplyStun(this, 3.5f, () =>
+                        {
+                            playerCharacter.CanUpdateInput = true;
+                        });
+                        playerCharacter.HealthComponent.ApplyDamage(this, _character.AttackDamageValue);
+                    }
+                }
+                self.QueueFree();
+            };
+            projectile.Initialize();
+            GetTree().Root.AddChild(projectile, true);
+
+            _character.NavAgent.RequestPathTo(CustomNavigationServer.Instance.GetRandomPointInActiveRegion());
+            FSM.RequestState<RunState>();
+        }
+        #endregion
+    }
+}

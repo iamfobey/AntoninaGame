@@ -1,0 +1,204 @@
+[gd_scene load_steps=25 format=3 uid="uid://b4qnfqokoiyxs"]
+
+[ext_resource type="Script" uid="uid://dngb8r11tcgsi" path="res://Game/Code/Logic/AI/Attacker/Simple/Character.cs" id="1_1arrw"]
+[ext_resource type="Script" uid="uid://cdhs35nsnaqws" path="res://Game/Code/Utils/Attributes/SpineAnimationManager.cs" id="2_i0hpg"]
+[ext_resource type="SpineAtlasResource" uid="uid://csgqg3l78tyb8" path="res://Game/Content/Assets/Animations/Boy.atlas" id="3_hq6e4"]
+[ext_resource type="Texture2D" uid="uid://brj52xahccmx2" path="res://Game/Content/Assets/Textures/Characters/Misc/Shadow.png" id="3_vgbfx"]
+[ext_resource type="SpineSkeletonFileResource" uid="uid://e2ucot7k0a4i" path="res://Game/Content/Assets/Animations/Boy.skel" id="4_3wxar"]
+[ext_resource type="Script" uid="uid://brd3uhsdvgo2c" path="res://Game/Code/Utils/AttackBody.cs" id="4_i2ehg"]
+[ext_resource type="Script" uid="uid://b5ax6uk6p6yg4" path="res://Game/Code/Core/FSM/FSM.cs" id="5_i3mpt"]
+[ext_resource type="Script" uid="uid://43d75ondt25i" path="res://Game/Code/Logic/AI/Attacker/Simple/FSM/AttackState.cs" id="6_imjfk"]
+[ext_resource type="Script" uid="uid://bekmq57ecn70y" path="res://Game/Code/Logic/AI/Attacker/Simple/FSM/IdleState.cs" id="7_6i11a"]
+[ext_resource type="Script" uid="uid://opuiouoh5pyw" path="res://Game/Code/Logic/AI/Attacker/Simple/FSM/RunState.cs" id="8_xykuf"]
+[ext_resource type="PackedScene" uid="uid://bj3xxrksshtlv" path="res://Game/Content/Prefabs/Core/Dirt.tscn" id="9_2cov2"]
+[ext_resource type="Script" uid="uid://btqr4c557n840" path="res://Game/Code/Logic/AI/Attacker/Simple/FSM/WalkState.cs" id="10_rbreq"]
+[ext_resource type="Script" uid="uid://dsh8aw5whuisj" path="res://Game/Code/Logic/Components/HealthComponent.cs" id="11_m2qc8"]
+[ext_resource type="Script" uid="uid://woks1icbeguk" path="res://Game/Code/Logic/Components/StaminaComponent.cs" id="12_305wi"]
+[ext_resource type="Script" uid="uid://bt3qhbeqkkbff" path="res://Game/Code/Logic/Components/MoveComponent.cs" id="13_sbfca"]
+[ext_resource type="Script" uid="uid://cf0mbxuqlgyrr" path="res://Game/Code/Logic/Components/PoisonedComponent.cs" id="15_ra8dd"]
+[ext_resource type="Script" uid="uid://ck5quhhv8vaq8" path="res://Game/Code/Logic/Components/DamageEffectComponent.cs" id="16_fytx5"]
+[ext_resource type="Texture2D" uid="uid://ipukwvw302gb" path="res://Game/Content/Assets/Textures/VFX/Punch.png" id="17_y87b8"]
+
+[sub_resource type="SpineSkeletonDataResource" id="SpineSkeletonDataResource_i0hpg"]
+atlas_res = ExtResource("3_hq6e4")
+skeleton_file_res = ExtResource("4_3wxar")
+default_mix = 0.2
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pjytc"]
+radius = 28.0
+height = 220.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_10jx0"]
+size = Vector2(247, 484)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qd8sp"]
+border_width_left = 200
+border_color = Color(0.984314, 0, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1inls"]
+bg_color = Color(0.776471, 0, 0.117647, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7y78"]
+size = Vector2(303, 276)
+
+[node name="Simple" type="RigidBody2D" node_paths=PackedStringArray("HealthBar", "PoisonedComponent", "SpineAnimationManager", "CollisionShape", "NavigationAgent", "FSM", "HealthComponent", "StaminaComponent", "MoveComponent", "DamageEffectComponent")]
+z_index = 100
+y_sort_enabled = true
+collision_layer = 5
+collision_mask = 11
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_1arrw")
+HealthBar = NodePath("HealthBar")
+PoisonedComponent = NodePath("Components/PoisonedComponent")
+SpineAnimationManager = NodePath("SpineAnimationManager")
+CollisionShape = NodePath("CollisionShape2D")
+NavigationAgent = NodePath("NavigationAgent2D")
+FSM = NodePath("FSM")
+HealthComponent = NodePath("Components/HealthComponent")
+StaminaComponent = NodePath("Components/StaminaComponent")
+MoveComponent = NodePath("Components/MoveComponent")
+DamageEffectComponent = NodePath("Components/DamageEffectComponent")
+
+[node name="SpineAnimationManager" type="Node2D" parent="." node_paths=PackedStringArray("SpineSprite")]
+script = ExtResource("2_i0hpg")
+AnimationSides = Dictionary[StringName, Dictionary]({
+&"Idle": {
+&"Backward": &"Back",
+&"Forward": &"Front",
+&"Left": &"Front",
+&"Right": &"Front"
+},
+&"Run": {
+&"Backward": &"Back",
+&"Forward": &"Front",
+&"Left": &"Front",
+&"Right": &"Front"
+},
+&"Walk": {
+&"Backward": &"Back",
+&"Forward": &"Front",
+&"Left": &"Front",
+&"Right": &"Front"
+}
+})
+SpineSprite = NodePath("SpineSprite")
+AnimationNameSeparator = "_"
+
+[node name="SpineSprite" type="SpineSprite" parent="SpineAnimationManager"]
+position = Vector2(-267, -575)
+scale = Vector2(0.3, 0.3)
+skeleton_data_res = SubResource("SpineSkeletonDataResource_i0hpg")
+preview_skin = "default"
+preview_animation = "Attack"
+preview_frame = true
+preview_time = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -14)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_pjytc")
+
+[node name="ShadowSprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -11)
+scale = Vector2(1.2, 1.61)
+texture = ExtResource("3_vgbfx")
+
+[node name="AttackBodies" type="Node2D" parent="."]
+
+[node name="AllAttackBody" type="StaticBody2D" parent="AttackBodies" node_paths=PackedStringArray("Root")]
+collision_layer = 128
+collision_mask = 128
+script = ExtResource("4_i2ehg")
+Root = NodePath("../..")
+Type = "All"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackBodies/AllAttackBody"]
+position = Vector2(-13.5, -242)
+shape = SubResource("RectangleShape2D_10jx0")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+visible = false
+z_index = 100
+offset_left = -123.0
+offset_top = -530.0
+offset_right = 77.0
+offset_bottom = -495.0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/background = SubResource("StyleBoxFlat_qd8sp")
+theme_override_styles/fill = SubResource("StyleBoxFlat_1inls")
+value = 50.0
+show_percentage = false
+metadata/_edit_use_anchors_ = true
+
+[node name="FSM" type="Node2D" parent="." node_paths=PackedStringArray("Root", "States")]
+script = ExtResource("5_i3mpt")
+Root = NodePath("..")
+States = [NodePath("AttackState"), NodePath("IdleState"), NodePath("RunState"), NodePath("WalkState")]
+
+[node name="AttackState" type="Node2D" parent="FSM" node_paths=PackedStringArray("AttackTimer", "AttackArea")]
+script = ExtResource("6_imjfk")
+AttackTimer = NodePath("AttackTimer")
+AttackArea = NodePath("Area2D")
+
+[node name="AttackTimer" type="Timer" parent="FSM/AttackState"]
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="FSM/AttackState"]
+collision_layer = 0
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FSM/AttackState/Area2D"]
+position = Vector2(-5.5, -257)
+shape = SubResource("RectangleShape2D_i7y78")
+
+[node name="IdleState" type="Node2D" parent="FSM"]
+script = ExtResource("7_6i11a")
+
+[node name="RunState" type="Node2D" parent="FSM" node_paths=PackedStringArray("SpawnDirtTimer")]
+script = ExtResource("8_xykuf")
+SpawnDirtTimer = NodePath("SpawnDirtTimer")
+DirtPrefab = ExtResource("9_2cov2")
+
+[node name="SpawnDirtTimer" type="Timer" parent="FSM/RunState"]
+wait_time = 5.0
+one_shot = true
+
+[node name="WalkState" type="Node2D" parent="FSM"]
+script = ExtResource("10_rbreq")
+
+[node name="Components" type="Node2D" parent="."]
+
+[node name="HealthComponent" type="Node2D" parent="Components"]
+script = ExtResource("11_m2qc8")
+metadata/_custom_type_script = "uid://dsh8aw5whuisj"
+
+[node name="StaminaComponent" type="Node2D" parent="Components"]
+position = Vector2(-1, 16)
+script = ExtResource("12_305wi")
+metadata/_custom_type_script = "uid://woks1icbeguk"
+
+[node name="MoveComponent" type="Node2D" parent="Components"]
+script = ExtResource("13_sbfca")
+
+[node name="PoisonedComponent" type="Node2D" parent="Components"]
+script = ExtResource("15_ra8dd")
+
+[node name="DamageEffectComponent" type="Node2D" parent="Components" node_paths=PackedStringArray("Sprite", "Timer")]
+script = ExtResource("16_fytx5")
+Sprite = NodePath("Sprite2D")
+Timer = NodePath("EffectTimer")
+
+[node name="Sprite2D" type="Sprite2D" parent="Components/DamageEffectComponent"]
+position = Vector2(-22, -422)
+texture = ExtResource("17_y87b8")
+
+[node name="EffectTimer" type="Timer" parent="Components/DamageEffectComponent"]
+wait_time = 0.2
+one_shot = true
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+target_position = Vector2(1332.66, 1232.31)
+avoidance_enabled = true
+velocity = Vector2(3.651e-06, -1)

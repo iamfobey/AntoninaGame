@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://da8dmc3yrtcf4"]
+
+[ext_resource type="Script" uid="uid://k0bjjftjnv8q" path="res://Game/Code/Logic/Misc/AimProjectile.cs" id="1_6h1xi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oqteo"]
+size = Vector2(1000, 500)
+
+[sub_resource type="Gradient" id="Gradient_376eq"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.0346535)
+colors = PackedColorArray(0, 0, 0, 0.389, 0, 0, 0, 0.527)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6h1xi"]
+gradient = SubResource("Gradient_376eq")
+width = 1
+height = 1
+
+[node name="AimProjectile" type="Node2D" node_paths=PackedStringArray("Area", "LifeTimer", "CollisionShape")]
+z_index = 100
+script = ExtResource("1_6h1xi")
+Area = NodePath("Area2D")
+LifeTimer = NodePath("Timer")
+CollisionShape = NodePath("Area2D/CollisionShape2D")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_oqteo")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1000, 500)
+texture = SubResource("GradientTexture2D_6h1xi")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.5
+
+[connection signal="body_entered" from="Area2D" to="." method="_OnAreaBodyEntered"]
+[connection signal="body_exited" from="Area2D" to="." method="_OnAreaBodyExited"]
+[connection signal="timeout" from="Timer" to="." method="_OnLifeTimerTimeout"]

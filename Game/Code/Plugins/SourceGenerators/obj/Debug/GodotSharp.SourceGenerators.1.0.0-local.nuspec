@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>GodotSharp.SourceGenerators</id>
+    <version>1.0.0-local</version>
+    <authors>Cat-Lips</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</projectUrl>
+    <description>Package Description</description>
+    <tags>Godot C# SourceGenerator</tags>
+    <repository type="git" url="https://github.com/Cat-Lips/GodotSharp.SourceGenerators" commit="6047e2e8c73d06f10bec0ea5ff5dc99b56a55d13" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="E:\Dev\Godot\AntoninaGame\Game\Code\Plugins\SourceGenerators\bin\Debug\netstandard2.0\GodotSharp.SourceGenerators.dll" target="lib\netstandard2.0\GodotSharp.SourceGenerators.dll" />
+    <file src="E:\Dev\Godot\AntoninaGame\Game\Code\Plugins\SourceGenerators\README.md" target="\README.md" />
+    <file src="E:\Dev\Godot\AntoninaGame\Game\Code\Plugins\SourceGenerators\Package\build\GodotSharp.SourceGenerators.targets" target="build\GodotSharp.SourceGenerators.targets" />
+    <file src="E:\Dev\Godot\AntoninaGame\Game\Code\Plugins\SourceGenerators\bin\Debug\netstandard2.0\GodotSharp.SourceGenerators.dll" target="analyzers\dotnet\cs\GodotSharp.SourceGenerators.dll" />
+  </files>
+</package>

@@ -1,0 +1,128 @@
+﻿{{-
+func visible(node)
+    ret node.Value.Visible
+end
+-}}
+
+{{- func render_unique(node) ~}}
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private {{node.Type}} _{{node.Name}};
+
+{{NSIndent}}    public {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
+{{NSIndent}}        GetNodeOrNull<{{node.Type}}>("%{{node.Path | string.split '/' | array.last}}");
+
+{{~ end -}}
+
+{{- func render_leaf(node, indent) ~}}
+
+{{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}{{indent}}        private {{node.Value.Type}} _{{node.Value.Name}};
+
+{{NSIndent}}{{indent}}        public {{node.Value.Type}} {{node.Value.Name}} => _{{node.Value.Name}} ??=
+{{NSIndent}}{{indent}}            _root.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{~ end -}}
+
+{{- func render_branch(node, depth, indent) ~}}
+
+{{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}{{indent}}        private __{{depth}}_{{node.Value.Name}} _{{depth}}_{{node.Value.Name}};
+
+{{NSIndent}}{{indent}}        public __{{depth}}_{{node.Value.Name}} {{node.Value.Name}}
+{{NSIndent}}{{indent}}            => _{{depth}}_{{node.Value.Name}} ??= new(_root);
+
+{{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}{{indent}}        public class __{{depth}}_{{node.Value.Name}}
+{{NSIndent}}{{indent}}        {
+{{NSIndent}}{{indent}}            private readonly {{SceneTree.Root.Type}} _root;
+
+{{NSIndent}}{{indent}}            public __{{depth}}_{{node.Value.Name}}({{SceneTree.Root.Type}} root)
+{{NSIndent}}{{indent}}                => _root = root;
+
+{{NSIndent}}{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}{{indent}}            private {{node.Value.Type}} _{{depth}}_{{node.Value.Name}};
+
+{{NSIndent}}{{indent}}            public {{node.Value.Type}} Get() => _{{depth}}_{{node.Value.Name}} ??=
+{{NSIndent}}{{indent}}                _root.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+
+{{NSIndent}}{{indent}}            public static implicit operator {{node.Value.Type}}(__{{depth}}_{{node.Value.Name}} source)
+{{NSIndent}}{{indent}}                => source.Get();
+{{~
+    for child in node.Children | array.filter @visible
+        render_tree child depth + 1 indent + "    "
+    end
+~}}
+{{NSIndent}}{{indent}}        }
+{{~ end -}}
+
+{{-
+func render_tree(node, depth=0, indent="")
+    if node.Children | array.filter @visible | array.size == 0
+        render_leaf node indent
+    else
+        render_branch node depth indent
+    end
+end
+-}}
+
+using System.ComponentModel;
+
+{{~NSOpen~}}
+{{NSIndent}}partial class {{ClassName}}
+{{NSIndent}}{
+#pragma warning disable CS0109 // Disable warning about redundant 'new' keyword
+{{NSIndent}}    public static new string TscnFilePath { get; } = "{{TscnResource}}";
+#pragma warning restore CS0109 // Restore warning about redundant 'new' keyword
+
+{{~
+for node in UniqueNodes
+    render_unique node
+end
+~}}
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private _SceneTree _sceneTree;
+
+{{NSIndent}}    private _SceneTree {{Root}} => _sceneTree ??= new(this);
+
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private class _SceneTree
+{{NSIndent}}    {
+{{NSIndent}}        private {{SceneTree.Root.Type}} _root;
+
+{{NSIndent}}        public _SceneTree({{ClassName}} source)
+{{NSIndent}}        {
+{{NSIndent}}            _root = GetSceneRoot(source);
+
+{{NSIndent}}            {{SceneTree.Root.Type}} GetSceneRoot(Godot.Node source)
+{{NSIndent}}            {
+{{NSIndent}}                while (true)
+{{NSIndent}}                {
+#if NET6_0_OR_GREATER // Godot 4
+{{NSIndent}}                    if (source.SceneFilePath is "{{TscnResource}}")
+#else
+{{NSIndent}}                    if (source.Filename is "{{TscnResource}}")
+#endif
+{{NSIndent}}                        return ({{SceneTree.Root.Type}})source;
+{{NSIndent}}                    var parent = source.GetParent();
+{{NSIndent}}                    if (parent is null)
+{{NSIndent}}                        Throw($"{source.Name} returned null parent");
+{{NSIndent}}                    source = parent;
+{{NSIndent}}                }
+{{NSIndent}}            }
+
+{{NSIndent}}            static void Throw(string msg)
+{{NSIndent}}                => throw new System.InvalidOperationException($"Could not find scene root ({{ClassName}} can only be used within {{TscnResource}}) [Error: {msg}]");
+{{NSIndent}}        }
+
+{{NSIndent}}        public {{SceneTree.Root.Type}} Get()
+{{NSIndent}}            => _root;
+
+{{NSIndent}}        public static implicit operator {{SceneTree.Root.Type}}(_SceneTree source)
+{{NSIndent}}            => source.Get();
+{{~
+for node in SceneTree.Children | array.filter @visible
+    render_tree node
+end
+~}}
+{{NSIndent}}    }
+{{NSIndent}}}
+{{~NSClose~}}

@@ -1,0 +1,934 @@
+[gd_scene load_steps=99 format=3 uid="uid://d3oghssyunoms"]
+
+[ext_resource type="Script" uid="uid://s4oy7nyoxs0c" path="res://Game/Code/Logic/Player/Character.cs" id="1_w1ksv"]
+[ext_resource type="SpineAtlasResource" uid="uid://c7wq8gv2h0cmc" path="res://Game/Content/Assets/Animations/Antinona.atlas" id="2_hb8nh"]
+[ext_resource type="Script" uid="uid://vbenfnnx850c" path="res://Game/Code/Utils/SpineAnimationManager.cs" id="2_qqtj0"]
+[ext_resource type="SpineSkeletonFileResource" uid="uid://c0mwr8d6gi3qj" path="res://Game/Content/Assets/Animations/Antinona.skel" id="3_hb8nh"]
+[ext_resource type="Script" uid="uid://brd3uhsdvgo2c" path="res://Game/Code/Utils/AttackBody.cs" id="4_2jhnl"]
+[ext_resource type="Script" uid="uid://b5ax6uk6p6yg4" path="res://Game/Code/Core/FSM/FSM.cs" id="4_jlrvg"]
+[ext_resource type="Texture2D" uid="uid://brj52xahccmx2" path="res://Game/Content/Assets/Textures/Characters/Misc/Shadow.png" id="4_w1ksv"]
+[ext_resource type="Script" uid="uid://cq82fs5u78cem" path="res://Game/Code/Logic/Player/FSM/RagAttackState.cs" id="8_eig2m"]
+[ext_resource type="Script" uid="uid://dy2jcnubfn6x5" path="res://Game/Code/Logic/Player/FSM/MopAttackState.cs" id="8_qqtj0"]
+[ext_resource type="Script" uid="uid://dsnio2pwl6bfp" path="res://Game/Code/Logic/Player/FSM/FeetAttackState.cs" id="8_skb66"]
+[ext_resource type="Script" uid="uid://631w8po7njju" path="res://Game/Code/Logic/Player/FSM/IdleState.cs" id="8_vojil"]
+[ext_resource type="Script" uid="uid://bageg712i4ydd" path="res://Game/Code/Logic/Player/FSM/RunState.cs" id="9_0mlx8"]
+[ext_resource type="PackedScene" uid="uid://ctp3825oi1mwd" path="res://Game/Content/Prefabs/Misc/StraightProjectile.tscn" id="9_k3bcp"]
+[ext_resource type="Script" uid="uid://dgexww101r7kj" path="res://Game/Code/Logic/Player/FSM/WalkState.cs" id="10_2jhnl"]
+[ext_resource type="Script" uid="uid://dsh8aw5whuisj" path="res://Game/Code/Logic/Components/HealthComponent.cs" id="10_7x5n4"]
+[ext_resource type="Script" uid="uid://bfi6ju5u3jegx" path="res://Game/Code/Logic/Player/FSM/DashState.cs" id="10_bftwr"]
+[ext_resource type="Script" uid="uid://woks1icbeguk" path="res://Game/Code/Logic/Components/StaminaComponent.cs" id="11_bftwr"]
+[ext_resource type="Script" uid="uid://cy7j21wr2d5a1" path="res://Game/Code/Logic/Player/FSM/BlockState.cs" id="11_vojil"]
+[ext_resource type="Script" uid="uid://bt3qhbeqkkbff" path="res://Game/Code/Logic/Components/MoveComponent.cs" id="14_0mlx8"]
+[ext_resource type="Script" uid="uid://dqfegps1kyd8y" path="res://Game/Code/Logic/Player/FSM/MopDashState.cs" id="15_qqtj0"]
+[ext_resource type="Texture2D" uid="uid://djuefyltas34y" path="res://Game/Content/Assets/Textures/VFX/Player_Damage.png" id="16_w38xs"]
+[ext_resource type="Script" uid="uid://ck5quhhv8vaq8" path="res://Game/Code/Logic/Components/DamageEffectComponent.cs" id="17_bp12t"]
+[ext_resource type="Script" uid="uid://cnru4pwd0fmnv" path="res://Game/Code/Logic/Components/PowerComponent.cs" id="20_qqtj0"]
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_5vvlk"]
+from = "Idle/Back"
+to = "Walk/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_k7h1p"]
+from = "Idle/Front"
+to = "Walk/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_3vnm6"]
+from = "Idle/Side"
+to = "Walk/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_jw1or"]
+from = "Idle/Side2"
+to = "Walk/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_47pi4"]
+from = "Walk/Back"
+to = "Idle/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_hutuc"]
+from = "Walk/Front"
+to = "Idle/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_0xtu0"]
+from = "Walk/Side"
+to = "Idle/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_6a00s"]
+from = "Walk/Side2"
+to = "Idle/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_3mxne"]
+from = "Speed/Back"
+to = "Walk/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_mv53m"]
+from = "Speed/Front"
+to = "Walk/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_yryrl"]
+from = "Speed/Side"
+to = "Walk/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_ebnx7"]
+from = "Speed/Side2"
+to = "Walk/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_ix5my"]
+from = "Walk/Back"
+to = "Speed/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_dhosn"]
+from = "Walk/Front"
+to = "Speed/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_etr7p"]
+from = "Walk/Side"
+to = "Speed/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_d35wd"]
+from = "Walk/Side2"
+to = "Speed/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_f1txk"]
+from = "Speed/Back"
+to = "Idle/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_jac78"]
+from = "Speed/Front"
+to = "Idle/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_nwq2d"]
+from = "Speed/Side"
+to = "Idle/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_yjpfg"]
+from = "Speed/Side2"
+to = "Idle/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_o1g5p"]
+from = "Attack/Back"
+to = "Idle/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_1nvfn"]
+from = "Attack/Front_1"
+to = "Idle/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_glxs8"]
+from = "Attack/Side"
+to = "Idle/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_olj1a"]
+from = "Attack/Side2"
+to = "Idle/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_f3u07"]
+from = "Idle/Back"
+to = "Attack/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_1usku"]
+from = "Idle/Front"
+to = "Attack/Front_1"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_dgt1k"]
+from = "Idle/Side"
+to = "Attack/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_dmb1r"]
+from = "Idle/Side2"
+to = "Attack/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_tm33i"]
+from = "Attack/Back"
+to = "Walk/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_4h0hl"]
+from = "Attack/Front_1"
+to = "Walk/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_qss5c"]
+from = "Attack/Side"
+to = "Walk/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_3itbc"]
+from = "Attack/Side2"
+to = "Walk/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_5rcfy"]
+from = "Walk/Back"
+to = "Attack/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_xm2wf"]
+from = "Walk/Front"
+to = "Attack/Front_1"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_56stg"]
+from = "Walk/Side"
+to = "Attack/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_ila0n"]
+from = "Walk/Side2"
+to = "Attack/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_0l7kt"]
+from = "Attack/Back"
+to = "Block/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_g178s"]
+from = "Attack/Front_1"
+to = "Block/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_sharo"]
+from = "Attack/Side"
+to = "Block/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_brm6q"]
+from = "Attack/Side2"
+to = "Block/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_vx8ur"]
+from = "Block/Back"
+to = "Attack/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_qg4ba"]
+from = "Block/Front"
+to = "Attack/Front_1"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_l576k"]
+from = "Block/Side"
+to = "Attack/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_hjp4t"]
+from = "Block/Side2"
+to = "Attack/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_f8cgl"]
+from = "Block/Back"
+to = "Idle/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_vwoxq"]
+from = "Block/Front"
+to = "Idle/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_fcqai"]
+from = "Block/Side"
+to = "Idle/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_u4sbj"]
+from = "Block/Side2"
+to = "Idle/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_vmk1g"]
+from = "Idle/Back"
+to = "Block/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_tcy77"]
+from = "Idle/Front"
+to = "Block/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_bfdul"]
+from = "Idle/Side"
+to = "Block/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_so40s"]
+from = "Idle/Side2"
+to = "Block/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_k8g6h"]
+from = "Walk/Back"
+to = "Block/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_c3mks"]
+from = "Walk/Front"
+to = "Block/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_k7exv"]
+from = "Walk/Side"
+to = "Block/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_netf0"]
+from = "Walk/Side2"
+to = "Block/Side2"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_h6nyv"]
+from = "Block/Back"
+to = "Walk/Back"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_vuncg"]
+from = "Block/Front"
+to = "Walk/Front"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_tsfmn"]
+from = "Block/Side"
+to = "Walk/Side"
+mix = 0.2
+
+[sub_resource type="SpineAnimationMix" id="SpineAnimationMix_bdth1"]
+from = "Block/Side2"
+to = "Walk/Side2"
+mix = 0.2
+
+[sub_resource type="SpineSkeletonDataResource" id="SpineSkeletonDataResource_5vvlk"]
+atlas_res = ExtResource("2_hb8nh")
+skeleton_file_res = ExtResource("3_hb8nh")
+animation_mixes = [SubResource("SpineAnimationMix_5vvlk"), SubResource("SpineAnimationMix_k7h1p"), SubResource("SpineAnimationMix_3vnm6"), SubResource("SpineAnimationMix_jw1or"), SubResource("SpineAnimationMix_47pi4"), SubResource("SpineAnimationMix_hutuc"), SubResource("SpineAnimationMix_0xtu0"), SubResource("SpineAnimationMix_6a00s"), SubResource("SpineAnimationMix_3mxne"), SubResource("SpineAnimationMix_mv53m"), SubResource("SpineAnimationMix_yryrl"), SubResource("SpineAnimationMix_ebnx7"), SubResource("SpineAnimationMix_ix5my"), SubResource("SpineAnimationMix_dhosn"), SubResource("SpineAnimationMix_etr7p"), SubResource("SpineAnimationMix_d35wd"), SubResource("SpineAnimationMix_f1txk"), SubResource("SpineAnimationMix_jac78"), SubResource("SpineAnimationMix_nwq2d"), SubResource("SpineAnimationMix_yjpfg"), SubResource("SpineAnimationMix_o1g5p"), SubResource("SpineAnimationMix_1nvfn"), SubResource("SpineAnimationMix_glxs8"), SubResource("SpineAnimationMix_olj1a"), SubResource("SpineAnimationMix_f3u07"), SubResource("SpineAnimationMix_1usku"), SubResource("SpineAnimationMix_dgt1k"), SubResource("SpineAnimationMix_dmb1r"), SubResource("SpineAnimationMix_tm33i"), SubResource("SpineAnimationMix_4h0hl"), SubResource("SpineAnimationMix_qss5c"), SubResource("SpineAnimationMix_3itbc"), SubResource("SpineAnimationMix_5rcfy"), SubResource("SpineAnimationMix_xm2wf"), SubResource("SpineAnimationMix_56stg"), SubResource("SpineAnimationMix_ila0n"), SubResource("SpineAnimationMix_0l7kt"), SubResource("SpineAnimationMix_g178s"), SubResource("SpineAnimationMix_sharo"), SubResource("SpineAnimationMix_brm6q"), SubResource("SpineAnimationMix_vx8ur"), SubResource("SpineAnimationMix_qg4ba"), SubResource("SpineAnimationMix_l576k"), SubResource("SpineAnimationMix_hjp4t"), SubResource("SpineAnimationMix_f8cgl"), SubResource("SpineAnimationMix_vwoxq"), SubResource("SpineAnimationMix_fcqai"), SubResource("SpineAnimationMix_u4sbj"), SubResource("SpineAnimationMix_vmk1g"), SubResource("SpineAnimationMix_tcy77"), SubResource("SpineAnimationMix_bfdul"), SubResource("SpineAnimationMix_so40s"), SubResource("SpineAnimationMix_k8g6h"), SubResource("SpineAnimationMix_c3mks"), SubResource("SpineAnimationMix_k7exv"), SubResource("SpineAnimationMix_netf0"), SubResource("SpineAnimationMix_h6nyv"), SubResource("SpineAnimationMix_vuncg"), SubResource("SpineAnimationMix_tsfmn"), SubResource("SpineAnimationMix_bdth1")]
+
+[sub_resource type="Animation" id="Animation_qqtj0"]
+resource_name = "Attack_Backward"
+length = 0.51
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.02, 0.46, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.7883, 1.71897, 1.7883]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(-0.02, 0.46, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(145.9, -288.425), Vector2(-36, -550), Vector2(145.9, -288.425)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:shape:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(-0.02, 0.46, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(496, 243), Vector2(496, 243), Vector2(496, 243)]
+}
+
+[sub_resource type="Animation" id="Animation_skb66"]
+resource_name = "Attack_Forward"
+length = 0.51
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:shape:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.01, 0.39, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(496, 243), Vector2(496, 243), Vector2(496, 243)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(-0.01, 0.39, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.76746, 2.60077, 1.76746]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(-0.01, 0.39, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(146, -293), Vector2(142, -110), Vector2(146, -293)]
+}
+
+[sub_resource type="Animation" id="Animation_eig2m"]
+resource_name = "Attack_Left"
+length = 0.51
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:shape:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.44, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(496, 243), Vector2(496, 243), Vector2(496, 243)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.44, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.44386, 0.149397, 1.44386]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.44, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-229, -315), Vector2(-352, -294), Vector2(-229, -315)]
+}
+
+[sub_resource type="Animation" id="Animation_k3bcp"]
+resource_name = "Attack_Right"
+length = 0.51
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:shape:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.44, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(496, 243), Vector2(496, 243), Vector2(496, 243)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.44, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.71181, 2.94324, 1.71181]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.44, 0.51),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(217, -315), Vector2(330, -260), Vector2(217, -315)]
+}
+
+[sub_resource type="Animation" id="Animation_qsrb4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:shape:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(496, 243)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.149397]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../FSM/MopAttackState/Area2D/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-352, -294)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qsrb4"]
+_data = {
+&"Attack_Backward": SubResource("Animation_qqtj0"),
+&"Attack_Forward": SubResource("Animation_skb66"),
+&"Attack_Left": SubResource("Animation_eig2m"),
+&"Attack_Right": SubResource("Animation_k3bcp"),
+&"RESET": SubResource("Animation_qsrb4")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7x5n4"]
+radius = 32.0
+height = 350.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ayerq"]
+size = Vector2(453, 684)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w38xs"]
+size = Vector2(197.5, 110.25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bp12t"]
+size = Vector2(425, 152)
+
+[sub_resource type="Shader" id="Shader_ajna5"]
+code = "shader_type canvas_item;
+render_mode blend_mix; // Remove this if you want to use HDR glow instead (use \"Glow\" and \"Outline Glow\" sliders)
+
+uniform int beams = 2; // How many beams the energy field should have
+
+uniform float energy = 3.0; // How much the beams will travel up and down
+uniform int roughness : hint_range(1, 10) = 3; // How compact the noise texture will be
+uniform int frequency = 10; // Amount of \"ripples\" in the beams
+
+uniform float speed = 1.0; // Animation speed
+uniform float thickness : hint_range(0.0, 0.1) = 0.006; // Thickness of the main beam
+uniform float outline_thickness : hint_range(0.0, 0.1) = 0.03; //Thickness of the outline color
+uniform float beam_difference : hint_range(0.0, 1.0) = 0.0; // The thickness difference between the main beam and the other, if there are more than one beam. The closer to 1 the smaller the thickness difference.
+
+uniform float glow : hint_range(0.0, 3.0) = 0.0; // Use together with WorldEnvironment's Glow feature
+uniform float outline_glow : hint_range(0.0, 3.0) = 0.0;
+
+uniform vec4 color : source_color;
+uniform vec4 outline_color : source_color;
+
+uniform float progress : hint_range(0.0, 1.0) = 1.0;
+
+uniform float y_offset : hint_range (-0.5, 0.5) = 0.0; // Position of the beam
+uniform float fixed_edge_size : hint_range(0.0, 0.5) = 0.05; // How close to the edge should the beam be still before the animation starts
+uniform vec2 noise_scale = vec2(1.0); // If the object (for example the ColorRect or Sprite node) is compressed use this to compensate for the noise texture being compressed.
+
+// New uniform to control the size of the beam
+uniform float beam_size : hint_range(0.1, 10.0) = 1.0; // Scale factor for beam size
+
+// New uniform to control the outline size
+uniform float outline_size : hint_range(0.1, 10.0) = 1.0; // Scale factor for outline size
+
+float random(vec2 uv) {
+    return fract(sin(dot(uv.xy,
+        vec2(12.9898,78.233))) *
+            43758.5453123);
+}
+
+float noise(vec2 uv) {
+    vec2 uv_index = floor(uv);
+    vec2 uv_fract = fract(uv);
+
+    // Four corners in 2D of a tile
+    float a = random(uv_index);
+    float b = random(uv_index + vec2(1.0, 0.0));
+    float c = random(uv_index + vec2(0.0, 1.0));
+    float d = random(uv_index + vec2(1.0, 1.0));
+
+    vec2 blur = smoothstep(0.0, 1.0, uv_fract);
+
+    return mix(a, b, blur.x) +
+            (c - a) * blur.y * (1.0 - blur.x) +
+            (d - b) * blur.x * blur.y;
+}
+
+float fbm(vec2 uv, float time) {
+    int octaves = roughness;
+    float amp = 0.01 * energy * progress;
+    float freq = float(frequency);
+    float value = 0.0;
+    
+    for(int i = 0; i < octaves; i++) {
+        value += amp * noise(freq * vec2(uv.x, uv.y + time));
+        amp *= 0.5;
+        freq *= 2.0;
+    }
+    return value;
+}
+
+vec4 difference(vec4 base, vec4 blend){
+    return abs(base - blend);
+}
+
+vec4 bolt(vec2 uv, float time, float i)
+{
+    // Setup the beam locking to the edges.
+    float falloff = smoothstep(0.0, fixed_edge_size, uv.x) * smoothstep(0.0, fixed_edge_size, 1.0 - uv.x);
+    
+    // Use Fractal Brownian Motion to create a \"cloud texture\" and use Difference blend mode to make the beam
+    vec4 clouds = vec4(fbm((uv + vec2(i)) * noise_scale, time * speed)) * falloff;
+    vec4 diff_clouds = difference(clouds, vec4(uv.y - 0.5 + y_offset + (uv.y * falloff * 0.02 * energy * progress)));
+    
+    // Create a new noise to mask the beams on low \"progress\" values. To make a \"turn-off\" effect more visually interesting.
+    vec4 clouds2 = vec4(fbm((uv * 2.0) * noise_scale, time * 1.0)) * 5.0;
+    diff_clouds += smoothstep(0.0, 0.8, clouds2) * 0.1 * (1.0 - progress);
+    
+    // Set thickness of the beams with scaling
+    float thickness2 =  1.0 - (thickness * beam_size / (min(i + beam_difference, 1.0) + (1.0 - beam_difference))) * progress;
+    vec4 beam = clamp(smoothstep(thickness2, thickness2 + 0.005 * progress, 1.0 - diff_clouds), vec4(0.0), vec4(1.0));
+    
+    // Set the beam outlines with scaling
+    vec4 beam_outline;
+    float outline = thickness2 - (outline_thickness * outline_size * progress);
+    beam_outline = clamp(smoothstep(outline, outline + 0.04, 1.0 - diff_clouds), 0.0, 1.0);
+    beam_outline = clamp(beam_outline - beam, 0.0, 1.0);
+    
+    // Merge the beam and the outline and return to the fragment function
+    return (beam * (color + vec4(glow, glow, glow, 0.0))) + (beam_outline * (outline_color + vec4(outline_glow, outline_glow, outline_glow, 0.0)));
+}
+
+void fragment()
+{    
+    vec4 beam = vec4(0.0);
+    
+    for (int i = 0; i < beams; i++) {
+        beam = max(beam, bolt(UV, TIME, float(i)));
+    }
+    
+    COLOR = vec4(beam.x, beam.y, beam.z, beam.w);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eig2m"]
+shader = SubResource("Shader_ajna5")
+shader_parameter/beams = 2
+shader_parameter/energy = 14.425
+shader_parameter/roughness = 3
+shader_parameter/frequency = 10
+shader_parameter/speed = 1.0
+shader_parameter/thickness = 0.011
+shader_parameter/outline_thickness = 0.01
+shader_parameter/beam_difference = 1.0
+shader_parameter/glow = 1.281
+shader_parameter/outline_glow = 0.0
+shader_parameter/color = Color(0.939, 0.011, 0, 1)
+shader_parameter/outline_color = Color(0.8, 0.00784314, 0, 1)
+shader_parameter/progress = 1.0
+shader_parameter/y_offset = 0.0
+shader_parameter/fixed_edge_size = 0.05
+shader_parameter/noise_scale = Vector2(1, 1)
+shader_parameter/beam_size = 10.0
+shader_parameter/outline_size = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_skb66"]
+size = Vector2(496, 243)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jrkg2"]
+size = Vector2(524, 744)
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("FSM", "SpineAnimationManager", "Camera", "HeadSocket", "MiddleSocket", "HealthComponent", "DamageEffectComponent", "StaminaComponent", "MoveComponent", "PowerComponent")]
+z_index = 100
+y_sort_enabled = true
+collision_layer = 5
+collision_mask = 8
+platform_on_leave = 2
+platform_floor_layers = 4294901760
+script = ExtResource("1_w1ksv")
+FSM = NodePath("FSM")
+SpineAnimationManager = NodePath("SpineAnimationManager")
+Camera = NodePath("Camera2D")
+HeadSocket = NodePath("Sockets/Head")
+MiddleSocket = NodePath("Sockets/Middle")
+HealthComponent = NodePath("Components/HealthComponent")
+DamageEffectComponent = NodePath("Components/DamageEffectComponent")
+StaminaComponent = NodePath("Components/StaminaComponent")
+MoveComponent = NodePath("Components/MoveComponent")
+PowerComponent = NodePath("Components/PowerComponent")
+
+[node name="SpineAnimationManager" type="Node2D" parent="." node_paths=PackedStringArray("AnimationPlayer", "SpineSprite")]
+script = ExtResource("2_qqtj0")
+AnimationPlayer = NodePath("SpineSprite/AnimationPlayer")
+AnimationSides = Dictionary[StringName, Dictionary]({
+&"Attack": {
+&"Backward": &"Back",
+&"Forward": &"Front_1",
+&"Left": &"Side2",
+&"Right": &"Side"
+},
+&"Block": {
+&"Backward": &"Back",
+&"Forward": &"Front",
+&"Left": &"Side2",
+&"Right": &"Side"
+},
+&"Idle": {
+&"Backward": &"Back",
+&"Forward": &"Front",
+&"Left": &"Side2",
+&"Right": &"Side"
+},
+&"Speed": {
+&"Backward": &"Back",
+&"Forward": &"Front",
+&"Left": &"Side2",
+&"Right": &"Side"
+},
+&"Walk": {
+&"Backward": &"Back",
+&"Forward": &"Front",
+&"Left": &"Side2",
+&"Right": &"Side"
+}
+})
+SpineSprite = NodePath("SpineSprite")
+
+[node name="SpineSprite" type="SpineSprite" parent="SpineAnimationManager"]
+position = Vector2(-277, -780)
+scale = Vector2(0.3, 0.3)
+skeleton_data_res = SubResource("SpineSkeletonDataResource_5vvlk")
+preview_skin = "default"
+preview_animation = "Idle/Front"
+preview_frame = true
+preview_time = 0.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SpineAnimationManager/SpineSprite"]
+libraries = {
+&"": SubResource("AnimationLibrary_qsrb4")
+}
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -350)
+zoom = Vector2(0.75, 0.75)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-27, -27)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_7x5n4")
+
+[node name="ShadowSprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-28, -20)
+scale = Vector2(1.5, 1.701)
+texture = ExtResource("4_w1ksv")
+
+[node name="AttackBodies" type="Node2D" parent="."]
+
+[node name="AllAttackBody" type="StaticBody2D" parent="AttackBodies" node_paths=PackedStringArray("Root")]
+collision_layer = 64
+collision_mask = 64
+script = ExtResource("4_2jhnl")
+Root = NodePath("../..")
+Type = "All"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackBodies/AllAttackBody"]
+position = Vector2(-33.5, -337)
+shape = SubResource("RectangleShape2D_ayerq")
+
+[node name="HeadAttackBody" type="StaticBody2D" parent="AttackBodies" node_paths=PackedStringArray("Root")]
+collision_layer = 64
+collision_mask = 64
+script = ExtResource("4_2jhnl")
+Root = NodePath("../..")
+Type = "Head"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackBodies/HeadAttackBody"]
+position = Vector2(-28.25, -574.875)
+shape = SubResource("RectangleShape2D_w38xs")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="MiddleAttackBody" type="StaticBody2D" parent="AttackBodies" node_paths=PackedStringArray("Root")]
+collision_layer = 64
+collision_mask = 64
+script = ExtResource("4_2jhnl")
+Root = NodePath("../..")
+Type = "Middle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackBodies/MiddleAttackBody"]
+position = Vector2(-40.5, -293)
+shape = SubResource("RectangleShape2D_bp12t")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="FSM" type="Node2D" parent="." node_paths=PackedStringArray("Root", "States")]
+process_priority = 1000
+script = ExtResource("4_jlrvg")
+Root = NodePath("..")
+States = [NodePath("RagAttackState"), NodePath("FeetAttackState"), NodePath("MopAttackState"), NodePath("IdleState"), NodePath("RunState"), NodePath("WalkState"), NodePath("DashState"), NodePath("BlockState"), NodePath("MopDashState")]
+
+[node name="RagAttackState" type="Node2D" parent="FSM" node_paths=PackedStringArray("Line")]
+script = ExtResource("8_eig2m")
+Line = NodePath("Line2D")
+Projectile = ExtResource("9_k3bcp")
+
+[node name="Line2D" type="Line2D" parent="FSM/RagAttackState"]
+material = SubResource("ShaderMaterial_eig2m")
+width = 85.0
+texture_mode = 2
+
+[node name="FeetAttackState" type="Node2D" parent="FSM" node_paths=PackedStringArray("AttackArea", "HitDelayTimer")]
+script = ExtResource("8_skb66")
+AttackArea = NodePath("../MopAttackState/Area2D")
+HitDelayTimer = NodePath("../MopAttackState/HitDelayTimer")
+
+[node name="MopAttackState" type="Node2D" parent="FSM" node_paths=PackedStringArray("ComboResetTimer", "HitDelayTimer", "AttackArea")]
+script = ExtResource("8_qqtj0")
+ComboResetTimer = NodePath("ComboResetTimer")
+HitDelayTimer = NodePath("HitDelayTimer")
+AttackArea = NodePath("Area2D")
+
+[node name="ComboResetTimer" type="Timer" parent="FSM/MopAttackState"]
+wait_time = 0.75
+one_shot = true
+
+[node name="HitDelayTimer" type="Timer" parent="FSM/MopAttackState"]
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="FSM/MopAttackState"]
+visible = false
+collision_layer = 0
+collision_mask = 160
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FSM/MopAttackState/Area2D"]
+position = Vector2(-352, -294)
+rotation = 0.149397
+shape = SubResource("RectangleShape2D_skb66")
+debug_color = Color(0.979422, 0, 0.388169, 0.42)
+
+[node name="CleanState" type="Node2D" parent="FSM"]
+
+[node name="CleanTimer" type="Timer" parent="FSM/CleanState"]
+wait_time = 1.5
+one_shot = true
+
+[node name="IdleState" type="Node2D" parent="FSM"]
+script = ExtResource("8_vojil")
+
+[node name="RunState" type="Node2D" parent="FSM"]
+script = ExtResource("9_0mlx8")
+
+[node name="WalkState" type="Node2D" parent="FSM"]
+script = ExtResource("10_2jhnl")
+
+[node name="DashState" type="Node2D" parent="FSM"]
+script = ExtResource("10_bftwr")
+
+[node name="DashTimer" type="Timer" parent="FSM/DashState"]
+wait_time = 0.417
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="FSM/DashState"]
+collision_layer = 0
+collision_mask = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FSM/DashState/Area2D"]
+position = Vector2(-23, -339)
+shape = SubResource("RectangleShape2D_jrkg2")
+
+[node name="BlockState" type="Node2D" parent="FSM"]
+script = ExtResource("11_vojil")
+
+[node name="MopDashState" type="Node2D" parent="FSM"]
+script = ExtResource("15_qqtj0")
+
+[node name="Components" type="Node2D" parent="."]
+
+[node name="HealthComponent" type="Node2D" parent="Components"]
+script = ExtResource("10_7x5n4")
+metadata/_custom_type_script = "uid://dsh8aw5whuisj"
+
+[node name="StaminaComponent" type="Node2D" parent="Components"]
+script = ExtResource("11_bftwr")
+metadata/_custom_type_script = "uid://woks1icbeguk"
+
+[node name="MoveComponent" type="Node2D" parent="Components"]
+script = ExtResource("14_0mlx8")
+
+[node name="DamageEffectComponent" type="Node2D" parent="Components" node_paths=PackedStringArray("Sprite", "Timer")]
+script = ExtResource("17_bp12t")
+Sprite = NodePath("Sprite2D")
+Timer = NodePath("EffectTimer")
+
+[node name="Sprite2D" type="Sprite2D" parent="Components/DamageEffectComponent"]
+position = Vector2(-4, -669)
+texture = ExtResource("16_w38xs")
+
+[node name="EffectTimer" type="Timer" parent="Components/DamageEffectComponent"]
+wait_time = 0.2
+one_shot = true
+
+[node name="PowerComponent" type="Node2D" parent="Components"]
+script = ExtResource("20_qqtj0")
+
+[node name="Sockets" type="Node2D" parent="."]
+
+[node name="Head" type="Node2D" parent="Sockets"]
+position = Vector2(-28, -574)
+
+[node name="Middle" type="Node2D" parent="Sockets"]
+position = Vector2(-22, -333)
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+position = Vector2(-118, -53)
+vertices = PackedVector2Array(-76, -1, -50, -7, 245, -7, 264, 14, 264, 38, 252, 55, -63, 55, -83, 39)

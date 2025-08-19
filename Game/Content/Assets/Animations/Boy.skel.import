@@ -1,0 +1,14 @@
+[remap]
+
+importer="spine.skel"
+type="SpineSkeletonFileResource"
+uid="uid://e2ucot7k0a4i"
+path="res://.godot/imported/Boy.skel-a5690bc4d8b9d54cac87adc6afa10bf3.spskel"
+
+[deps]
+
+source_file="res://Game/Content/Assets/Animations/Boy.skel"
+dest_files=["res://.godot/imported/Boy.skel-a5690bc4d8b9d54cac87adc6afa10bf3.spskel"]
+
+[params]
+

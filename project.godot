@@ -1,0 +1,177 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/addons_path="res://Game/Code/ThirdParty"
+config/name="AntoninaGame"
+run/main_scene="uid://owudit4vrgqm"
+run/print_header=false
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
+run/low_processor_mode=true
+boot_splash/show_image=false
+run/scene="uid://qh1nbe7bhp30"
+
+[autoload]
+
+LoggerServer="res://Game/Code/Core/Logger/Server.cs"
+CoreServer="res://Game/Code/Core/Server.cs"
+DebugServer="res://Game/Code/Core/Debug/Server.cs"
+StatisticServer="res://Game/Code/Core/Statistic/Server.cs"
+SerializeServer="res://Game/Code/Core/Serialize/Server.cs"
+NavigationServer="res://Game/Code/Core/Navigation/Server.cs"
+ImGuiRoot="*res://Game/Code/ThirdParty/imgui-godot/data/ImGuiRoot.tscn"
+
+[debug]
+
+file_logging/enable_file_logging=true
+file_logging/log_path="user://Saved/Logs/godot.log"
+file_logging/max_log_files=15
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=2
+window/size/window_width_override="1920"
+window/size/window_height_override="1080"
+window/subwindows/embed_subwindows=false
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[dotnet]
+
+project/assembly_name="AntoninaGame"
+project/assembly_reload_attempts=1
+
+[editor]
+
+naming/default_signal_callback_name="_On_{node_name}_{signal_name}"
+naming/default_signal_callback_to_self_name="_On_{node_name}_{signal_name}"
+naming/scene_name_casing=1
+naming/script_name_casing=1
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://Game/Code/ThirdParty/AS2P/plugin.cfg", "res://Game/Code/ThirdParty/GameCRR/plugin.cfg", "res://Game/Code/ThirdParty/GameExtendableInspector/plugin.cfg", "res://Game/Code/ThirdParty/imgui-godot/plugin.cfg")
+
+[filesystem]
+
+import/fbx2gltf/enabled=false
+import/blender/enabled=false
+
+[importer_defaults]
+
+texture={
+"compress/channel_pack": 1,
+"compress/hdr_compression": 0,
+"compress/mode": 2,
+"compress/normal_map": 2,
+"detect_3d/compress_to": 0,
+"roughness/mode": 1
+}
+
+[input]
+
+Player_Move_Forward={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":87,"key_label":0,"unicode":119,"location":0,"echo":false,"script":null)
+]
+}
+Player_Move_Backward={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":115,"location":0,"echo":false,"script":null)
+]
+}
+Player_Move_Left={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":97,"location":0,"echo":false,"script":null)
+]
+}
+Player_Move_Right={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"key_label":0,"unicode":100,"location":0,"echo":false,"script":null)
+]
+}
+Player_Run={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194325,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+Player_Dash={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"key_label":0,"unicode":32,"location":0,"echo":false,"script":null)
+]
+}
+Player_Block={
+"deadzone": 0.2,
+"events": []
+}
+Player_Clean={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":70,"key_label":0,"unicode":102,"location":0,"echo":false,"script":null)
+]
+}
+Player_Mop_Attack={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(97, 21),"global_position":Vector2(106, 63),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+Player_Feet_Attack={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":69,"key_label":0,"unicode":101,"location":0,"echo":false,"script":null)
+]
+}
+Player_Rag_Attack={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(176, 28),"global_position":Vector2(185, 76),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+Debug_Menu={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":92,"key_label":0,"unicode":92,"location":0,"echo":false,"script":null)
+]
+}
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://Game/Content/Resources/Translations/Translations.en_US.translation", "res://Game/Content/Resources/Translations/Translations.jp_JP.translation", "res://Game/Content/Resources/Translations/Translations.ru_RU.translation")
+rendering/text_driver="ICU / HarfBuzz / Graphite (Built-in)"
+
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="AI"
+2d_physics/layer_3="Interactive"
+2d_physics/layer_4="Level"
+2d_physics/layer_6="InteractiveAttack"
+2d_physics/layer_7="PlayerAttack"
+2d_physics/layer_8="AIAttack"
+
+[physics]
+
+2d/physics_engine="GodotPhysics2D"
+3d/physics_engine="Dummy"
+
+[rendering]
+
+occlusion_culling/bvh_build_quality=0
+textures/vram_compression/import_etc2_astc=true
+lights_and_shadows/directional_shadow/size=2048
+2d/shadow_atlas/size=1024
+shader_compiler/shader_cache/strip_debug=true
+textures/default_filters/anisotropic_filtering_level=3
+anti_aliasing/screen_space_roughness_limiter/enabled=false
+anti_aliasing/quality/screen_space_aa=1
+lights_and_shadows/positional_shadow/atlas_size=2048

@@ -1,0 +1,197 @@
+[gd_scene load_steps=25 format=3 uid="uid://becld3hojre5h"]
+
+[ext_resource type="Script" uid="uid://dn841mvdvybrn" path="res://Game/Code/Logic/AI/Attacker/Arc/Character.cs" id="1_xyky2"]
+[ext_resource type="SpineAtlasResource" uid="uid://bu03ph2rvxhsb" path="res://Game/Content/Assets/Animations/Girl.atlas" id="3_m63u7"]
+[ext_resource type="Texture2D" uid="uid://brj52xahccmx2" path="res://Game/Content/Assets/Textures/Characters/Misc/Shadow.png" id="3_stpr8"]
+[ext_resource type="SpineSkeletonFileResource" uid="uid://balqu6bwy7l5y" path="res://Game/Content/Assets/Animations/Girl.skel" id="4_7x6aw"]
+[ext_resource type="Script" uid="uid://brd3uhsdvgo2c" path="res://Game/Code/Utils/AttackBody.cs" id="4_sahnn"]
+[ext_resource type="Script" uid="uid://b5ax6uk6p6yg4" path="res://Game/Code/Core/FSM/FSM.cs" id="5_omj8t"]
+[ext_resource type="Script" uid="uid://ceijrhs823xkv" path="res://Game/Code/Logic/AI/Attacker/Arc/FSM/AttackState.cs" id="6_ntapw"]
+[ext_resource type="Script" uid="uid://dm7757t8pr33m" path="res://Game/Code/Logic/AI/Attacker/Arc/FSM/IdleState.cs" id="7_fs675"]
+[ext_resource type="PackedScene" uid="uid://dc4rim1ssrm3o" path="res://Game/Content/Prefabs/Misc/SnotProjectile.tscn" id="7_ntapw"]
+[ext_resource type="PackedScene" uid="uid://bj3xxrksshtlv" path="res://Game/Content/Prefabs/Core/Dirt.tscn" id="8_fs675"]
+[ext_resource type="Script" uid="uid://cqw5p7aabim1x" path="res://Game/Code/Logic/AI/Attacker/Arc/FSM/RunState.cs" id="8_k6uv5"]
+[ext_resource type="Script" uid="uid://dr50ylb47b8x8" path="res://Game/Code/Logic/AI/Attacker/Arc/FSM/WalkState.cs" id="9_joqvk"]
+[ext_resource type="Script" uid="uid://dsh8aw5whuisj" path="res://Game/Code/Logic/Components/HealthComponent.cs" id="11_4g03q"]
+[ext_resource type="Script" uid="uid://woks1icbeguk" path="res://Game/Code/Logic/Components/StaminaComponent.cs" id="12_f4e6a"]
+[ext_resource type="Script" uid="uid://bt3qhbeqkkbff" path="res://Game/Code/Logic/Components/MoveComponent.cs" id="13_k7jpl"]
+[ext_resource type="Script" uid="uid://cf0mbxuqlgyrr" path="res://Game/Code/Logic/Components/PoisonedComponent.cs" id="15_82k3k"]
+[ext_resource type="Script" uid="uid://ck5quhhv8vaq8" path="res://Game/Code/Logic/Components/DamageEffectComponent.cs" id="17_gq62c"]
+[ext_resource type="Script" uid="uid://cdhs35nsnaqws" path="res://Game/Code/Utils/Attributes/SpineAnimationManager.cs" id="18_gq62c"]
+[ext_resource type="Texture2D" uid="uid://ipukwvw302gb" path="res://Game/Content/Assets/Textures/VFX/Punch.png" id="18_pxwps"]
+
+[sub_resource type="SpineSkeletonDataResource" id="SpineSkeletonDataResource_m63u7"]
+atlas_res = ExtResource("3_m63u7")
+skeleton_file_res = ExtResource("4_7x6aw")
+default_mix = 0.2
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pjytc"]
+radius = 28.0
+height = 220.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yo7d7"]
+size = Vector2(240, 483)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qd8sp"]
+border_width_left = 200
+border_color = Color(0.984314, 0, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1inls"]
+bg_color = Color(0.776471, 0, 0.117647, 1)
+
+[node name="Arc" type="RigidBody2D" node_paths=PackedStringArray("SnotSocket", "HealthBar", "PoisonedComponent", "SpineAnimationManager", "CollisionShape", "NavigationAgent", "FSM", "HealthComponent", "StaminaComponent", "MoveComponent", "DamageEffectComponent")]
+z_index = 100
+y_sort_enabled = true
+collision_layer = 5
+collision_mask = 11
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_xyky2")
+SnotSocket = NodePath("Sockets/Snot")
+RunSpeed = 600.0
+HealthBar = NodePath("HealthBar")
+PoisonedComponent = NodePath("Components/PoisonedComponent")
+SpineAnimationManager = NodePath("SpineAnimationManager")
+CollisionShape = NodePath("CollisionShape2D")
+NavigationAgent = NodePath("NavigationAgent2D")
+FSM = NodePath("FSM")
+HealthComponent = NodePath("Components/HealthComponent")
+StaminaComponent = NodePath("Components/StaminaComponent")
+MoveComponent = NodePath("Components/MoveComponent")
+DamageEffectComponent = NodePath("Components/DamageEffectComponent")
+
+[node name="SpineAnimationManager" type="Node2D" parent="." node_paths=PackedStringArray("SpineSprite")]
+script = ExtResource("18_gq62c")
+AnimationSides = Dictionary[StringName, Dictionary]({
+&"Idle": {
+&"Backward": &"Back",
+&"Forward": &"Front",
+&"Left": &"Front",
+&"Right": &"Front"
+},
+&"Run": {
+&"Backward": &"Back",
+&"Forward": &"Front",
+&"Left": &"Front",
+&"Right": &"Front"
+},
+&"Walk": {
+&"Backward": &"Back",
+&"Forward": &"Front",
+&"Left": &"Front",
+&"Right": &"Front"
+}
+})
+SpineSprite = NodePath("SpineSprite")
+AnimationNameSeparator = "_"
+
+[node name="SpineSprite" type="SpineSprite" parent="SpineAnimationManager"]
+position = Vector2(-331, -566)
+scale = Vector2(0.3, 0.3)
+skeleton_data_res = SubResource("SpineSkeletonDataResource_m63u7")
+preview_skin = "Default"
+preview_animation = "Idle_Front"
+preview_frame = true
+preview_time = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-12, -56)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_pjytc")
+
+[node name="ShadowSprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -11)
+scale = Vector2(1.2, 1.61)
+texture = ExtResource("3_stpr8")
+
+[node name="AttackBodies" type="Node2D" parent="."]
+
+[node name="AllAttackBody" type="StaticBody2D" parent="AttackBodies" node_paths=PackedStringArray("Root")]
+collision_layer = 128
+collision_mask = 128
+script = ExtResource("4_sahnn")
+Root = NodePath("../..")
+Type = "All"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackBodies/AllAttackBody"]
+position = Vector2(-10, -261)
+shape = SubResource("RectangleShape2D_yo7d7")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+visible = false
+z_index = 100
+offset_left = -123.0
+offset_top = -530.0
+offset_right = 77.0
+offset_bottom = -495.0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/background = SubResource("StyleBoxFlat_qd8sp")
+theme_override_styles/fill = SubResource("StyleBoxFlat_1inls")
+value = 50.0
+show_percentage = false
+metadata/_edit_use_anchors_ = true
+
+[node name="FSM" type="Node2D" parent="." node_paths=PackedStringArray("Root", "States")]
+script = ExtResource("5_omj8t")
+Root = NodePath("..")
+States = [NodePath("AttackState"), NodePath("IdleState"), NodePath("RunState"), NodePath("WalkState")]
+
+[node name="AttackState" type="Node2D" parent="FSM" node_paths=PackedStringArray("AttackTimer")]
+script = ExtResource("6_ntapw")
+AttackTimer = NodePath("AttackTimer")
+Projectile = ExtResource("7_ntapw")
+DirtPrefab = ExtResource("8_fs675")
+
+[node name="AttackTimer" type="Timer" parent="FSM/AttackState"]
+wait_time = 5.0
+one_shot = true
+
+[node name="IdleState" type="Node2D" parent="FSM"]
+script = ExtResource("7_fs675")
+
+[node name="RunState" type="Node2D" parent="FSM"]
+script = ExtResource("8_k6uv5")
+
+[node name="WalkState" type="Node2D" parent="FSM"]
+script = ExtResource("9_joqvk")
+
+[node name="Components" type="Node2D" parent="."]
+
+[node name="HealthComponent" type="Node2D" parent="Components"]
+script = ExtResource("11_4g03q")
+metadata/_custom_type_script = "uid://dsh8aw5whuisj"
+
+[node name="StaminaComponent" type="Node2D" parent="Components"]
+position = Vector2(-1, 16)
+script = ExtResource("12_f4e6a")
+metadata/_custom_type_script = "uid://woks1icbeguk"
+
+[node name="MoveComponent" type="Node2D" parent="Components"]
+script = ExtResource("13_k7jpl")
+
+[node name="PoisonedComponent" type="Node2D" parent="Components"]
+script = ExtResource("15_82k3k")
+
+[node name="DamageEffectComponent" type="Node2D" parent="Components" node_paths=PackedStringArray("Sprite", "Timer")]
+script = ExtResource("17_gq62c")
+Sprite = NodePath("Sprite2D")
+Timer = NodePath("EffectTimer")
+
+[node name="Sprite2D" type="Sprite2D" parent="Components/DamageEffectComponent"]
+position = Vector2(-11, -391)
+texture = ExtResource("18_pxwps")
+
+[node name="EffectTimer" type="Timer" parent="Components/DamageEffectComponent"]
+wait_time = 0.2
+one_shot = true
+
+[node name="Sockets" type="Node2D" parent="."]
+
+[node name="Snot" type="Node2D" parent="Sockets"]
+position = Vector2(-19, -408)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+target_position = Vector2(1332.66, 1232.31)
+avoidance_enabled = true
+velocity = Vector2(3.651e-06, -1)

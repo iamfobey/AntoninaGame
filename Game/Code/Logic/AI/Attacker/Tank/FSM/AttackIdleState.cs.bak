@@ -1,0 +1,82 @@
+﻿using Game.Core.FSM;
+using Game.Utils;
+using Godot;
+
+namespace Game.Logic.AI.Tank.FSM
+{
+    [Tool]
+    public partial class AttackIdleState : State
+    {
+        #region FSM STATE METHODS
+        [StateMethod]
+        public override void _StateReady()
+        {
+            base._StateReady();
+
+            _character = Root<Character>();
+        }
+
+        [StateMethod]
+        public override void _StateEnter()
+        {
+            base._StateEnter();
+
+            _character.AnimationTree.RequestAnimation("Transition", "Idle")
+                .UpdateBlendPosition("Idle", _character.MoveComponent.Direction);
+
+            _character.MoveComponent.Direction = Vector2.Zero;
+            _character.MoveComponent.Velocity = Vector2.Zero;
+            _character.NavigationAgent.TargetPosition = _character.GlobalPosition;
+
+            IdleTimer.Start();
+        }
+
+        [StateMethod]
+        public override void _StateExit()
+        {
+            base._StateExit();
+
+            IdleTimer.Stop();
+        }
+        #endregion
+
+        #region SIGNAL METHODS
+        [SignalMethod]
+        public void _OnIdleTimerTimeout()
+        {
+            if (_character.PoisonedComponent.IsPoisoned && FSM.GetState<AttackState>().CurrentPlayerCharacter != null)
+            {
+                _character.NavigationAgent.TargetPosition =
+                    _character.NavigationRegion.GetRandomPointRadius(_character.GlobalPosition, 500.0f, 2000.0f);
+
+                FSM.RequestState<AvoidWalkState>();
+
+                return;
+            }
+
+            if (_character.PoisonedComponent.IsPoisoned)
+            {
+                _character.NavigationAgent.TargetPosition = Player.Character.Instance.GlobalPosition;
+
+                FSM.RequestState<AttackState>();
+            }
+            else
+            {
+                _character.NavigationAgent.TargetPosition =
+                    _character.NavigationRegion.GetRandomPointRadius(_character.GlobalPosition, 500.0f, 2000.0f);
+
+                FSM.RequestState<WalkState>();
+            }
+        }
+        #endregion
+
+        #region EDITOR FIELDS
+        [Export]
+        public Timer IdleTimer;
+        #endregion
+
+        #region PRIVATE FIELDS
+        private Character _character;
+        #endregion
+    }
+}

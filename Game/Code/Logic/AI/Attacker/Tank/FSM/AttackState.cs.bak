@@ -1,0 +1,110 @@
+﻿using Game.Core.FSM;
+using Game.Utils;
+using Godot;
+
+namespace Game.Logic.AI.Tank.FSM
+{
+    [Tool]
+    public partial class AttackState : State
+    {
+        #region FSM STATE METHODS
+        [StateMethod]
+        public override void _StateReady()
+        {
+            base._StateReady();
+
+            _character = Root<Character>();
+        }
+
+        [StateMethod]
+        public override void _StateEnter()
+        {
+            base._StateEnter();
+
+            if (CurrentAttackCount < _character.MaxAttackCount)
+            {
+                CurrentAttackCount++;
+            }
+            else if (CurrentIdleCount < _character.MaxIdleCount)
+            {
+                CurrentIdleCount++;
+                FSM.RequestState<AttackIdleState>();
+                return;
+            }
+            else
+            {
+                CurrentAttackCount = 0;
+                CurrentIdleCount = 0;
+            }
+
+            _character.AnimationTree.RequestAnimation("Transition", "Attack");
+        }
+
+        [StateMethod]
+        public override void _StateProcess(double delta)
+        {
+            base._StateProcess(delta);
+
+            _character.AnimationTree.UpdateBlendPosition("Attack", _character.MoveComponent.Direction);
+        }
+
+        [StateMethod]
+        public override void _StateProcessPhysics(double delta)
+        {
+            base._StateProcessPhysics(delta);
+
+            if (_character.IsNavFinished())
+                FSM.RequestState<IdleState>();
+
+            _character.MoveComponent.Move(_character.AttackWalkSpeed);
+        }
+        #endregion
+
+        #region SIGNAL METHODS
+        [SignalMethod]
+        public void _OnAttackAreaBodyEntered(Node2D body)
+        {
+            if (FSM.IsCurrentStateEqual<AttackState>() && body is AttackBody { Root: Player.Character playerCharacter, Type: "Middle" })
+            {
+                playerCharacter.HealthComponent.ApplyDamage(_character, _character.AttackDamageValue);
+                CurrentPlayerCharacter = playerCharacter;
+
+                FSM.RequestState<IdleState>();
+            }
+        }
+
+        [SignalMethod]
+        public void _OnAttackAreaBodyExited(Node2D body)
+        {
+            if (body is AttackBody { Root: Player.Character, Type: "All" })
+            {
+                CurrentPlayerCharacter = null;
+            }
+        }
+
+        [SignalMethod]
+        public void _OnWalkTimerTimeout()
+        {
+            FSM.RequestState<IdleState>();
+        }
+        #endregion
+
+        #region PUBLIC FIELDS
+        public int CurrentAttackCount = 0;
+        public int CurrentIdleCount = 0;
+
+        public Player.Character? CurrentPlayerCharacter;
+        #endregion
+
+        #region EDITOR FIELDS
+        [Export]
+        public Area2D Area;
+        #endregion
+
+        #region PRIVATE FIELDS
+        private Character _character;
+
+        private Vector2 _targetPosition;
+        #endregion
+    }
+}

@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://bj3xxrksshtlv"]
+
+[ext_resource type="Texture2D" uid="uid://cg63m075sp0lc" path="res://Game/Content/Assets/Textures/Interactive/Dirt/Default.png" id="2_6nmh2"]
+[ext_resource type="Script" uid="uid://dua4eytd5an4b" path="res://Game/Code/Logic/Interactive/Dirt/Dirt.cs" id="2_i4qdg"]
+[ext_resource type="Texture2D" uid="uid://bikbcpyudkbrt" path="res://Game/Content/Assets/Textures/Interactive/Dirt/Poison.png" id="3_oes6w"]
+[ext_resource type="Texture2D" uid="uid://clfdb7tdayaxa" path="res://Game/Content/Assets/Textures/Interactive/Dirt/Heal.png" id="4_62mlj"]
+[ext_resource type="Texture2D" uid="uid://dxb53djp2khp0" path="res://Game/Content/Assets/Textures/Interactive/Dirt/Chemical.png" id="5_igbxu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i4qdg"]
+radius = 161.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6nmh2"]
+radius = 97.00516
+
+[node name="Dirt" type="Sprite2D" node_paths=PackedStringArray("OuterArea", "InnerArea")]
+z_index = 5
+texture = ExtResource("2_6nmh2")
+script = ExtResource("2_i4qdg")
+TypeTexture = Dictionary[int, Texture2D]({
+0: ExtResource("2_6nmh2"),
+1: ExtResource("3_oes6w"),
+2: ExtResource("4_62mlj"),
+3: ExtResource("5_igbxu")
+})
+OuterArea = NodePath("OuterArea2D")
+InnerArea = NodePath("InnerArea2D")
+
+[node name="OuterArea2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OuterArea2D"]
+shape = SubResource("CircleShape2D_i4qdg")
+
+[node name="InnerArea2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InnerArea2D"]
+position = Vector2(1, -12)
+shape = SubResource("CircleShape2D_6nmh2")

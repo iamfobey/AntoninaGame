@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://dc4rim1ssrm3o"]
+
+[ext_resource type="Script" uid="uid://c8vxd5sxc7t4f" path="res://Game/Code/Logic/Misc/SnotProjectile.cs" id="1_l3hf7"]
+[ext_resource type="Texture2D" uid="uid://c40pas0aa027c" path="res://Game/Content/Assets/Textures/VFX/StraightProjectile.png" id="2_0y2xe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l3hf7"]
+size = Vector2(238, 120)
+
+[node name="SnotProjectile" type="Node2D" node_paths=PackedStringArray("LifeTimer", "CollisionShape")]
+z_index = 100
+script = ExtResource("1_l3hf7")
+LifeTimer = NodePath("LifeTimer")
+CollisionShape = NodePath("Area2D/CollisionShape2D")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 224
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_l3hf7")
+
+[node name="LifeTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_0y2xe")
+
+[connection signal="body_entered" from="Area2D" to="." method="_OnAreaBodyEntered"]
+[connection signal="body_exited" from="Area2D" to="." method="_OnAreaBodyExited"]
+[connection signal="timeout" from="LifeTimer" to="." method="_OnLifeTimerTimeout"]

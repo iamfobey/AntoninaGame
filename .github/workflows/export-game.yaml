@@ -1,0 +1,40 @@
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  export_game:
+    if: "contains(github.event.head_commit.message, '[export]')"
+    runs-on: ubuntu-latest
+    permissions: write-all
+    name: Export Game
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3.3.0
+
+    - name: Install wine
+      id: wine_install
+      run: |
+        sudo apt install wine64
+        echo "WINE_PATH=$(which wine64)" >> $GITHUB_OUTPUT
+  
+    - name: Export game
+      id: export
+      uses: firebelley/godot-export@v5.2.0
+      with:
+        godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/4.3/rc3/mono/Godot_v4.3-rc3_mono_linux_x86_64.zip
+        godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/4.3/rc3/mono/Godot_v4.3-rc3_mono_export_templates.tpz
+        relative_project_path: ./
+        archive_output: true
+        cache: true
+        wine_path: ${{ steps.wine_install.outputs.WINE_PATH }}
+        verbose: true
+
+    - name: Create release
+      uses: ncipollo/release-action@v1.12.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        generateReleaseNotes: true
+        tag: ${{ github.ref_name }}
+        artifacts: ${{ steps.export.outputs.archive_directory }}/*

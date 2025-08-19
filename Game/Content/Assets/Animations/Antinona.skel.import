@@ -1,0 +1,14 @@
+[remap]
+
+importer="spine.skel"
+type="SpineSkeletonFileResource"
+uid="uid://c0mwr8d6gi3qj"
+path="res://.godot/imported/Antinona.skel-ccb24e6b4b32d3a810e85d389ae3d6d4.spskel"
+
+[deps]
+
+source_file="res://Game/Content/Assets/Animations/Antinona.skel"
+dest_files=["res://.godot/imported/Antinona.skel-ccb24e6b4b32d3a810e85d389ae3d6d4.spskel"]
+
+[params]
+

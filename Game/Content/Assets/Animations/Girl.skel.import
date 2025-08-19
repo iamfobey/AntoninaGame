@@ -1,0 +1,14 @@
+[remap]
+
+importer="spine.skel"
+type="SpineSkeletonFileResource"
+uid="uid://balqu6bwy7l5y"
+path="res://.godot/imported/Girl.skel-d6ea4dfaefd61eada810fe4c395cf923.spskel"
+
+[deps]
+
+source_file="res://Game/Content/Assets/Animations/Girl.skel"
+dest_files=["res://.godot/imported/Girl.skel-d6ea4dfaefd61eada810fe4c395cf923.spskel"]
+
+[params]
+

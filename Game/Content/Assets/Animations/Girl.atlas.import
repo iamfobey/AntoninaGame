@@ -1,0 +1,16 @@
+[remap]
+
+importer="spine.atlas"
+type="SpineAtlasResource"
+uid="uid://bu03ph2rvxhsb"
+path="res://.godot/imported/Girl.atlas-10e7f6e9f4ffd4dc62bb4aa00a515e56.spatlas"
+
+[deps]
+
+source_file="res://Game/Content/Assets/Animations/Girl.atlas"
+dest_files=["res://.godot/imported/Girl.atlas-10e7f6e9f4ffd4dc62bb4aa00a515e56.spatlas"]
+
+[params]
+
+normal_map_prefix="n"
+specular_map_prefix="s"

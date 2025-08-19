@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3 uid="uid://dkbej1ofjxb7b"]
+
+[ext_resource type="Script" uid="uid://ko0jgq8r4noo" path="res://Game/Code/Logic/Interactive/Barrel/Barrel.cs" id="1_12yaj"]
+[ext_resource type="Texture2D" uid="uid://ipukwvw302gb" path="res://Game/Content/Assets/Textures/VFX/Punch.png" id="2_4emrs"]
+[ext_resource type="Script" uid="uid://brd3uhsdvgo2c" path="res://Game/Code/Utils/AttackBody.cs" id="3_acd5h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4emrs"]
+size = Vector2(1030, 1090)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ddnhd"]
+size = Vector2(304, 333)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_acd5h"]
+size = Vector2(304, 153.5)
+
+[node name="Barrel" type="RigidBody2D" node_paths=PackedStringArray("ExplosionArea", "ExplosionShape")]
+z_index = 100
+y_sort_enabled = true
+collision_layer = 8
+collision_mask = 8
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_12yaj")
+ExplosionArea = NodePath("Area2D")
+ExplosionShape = NodePath("AttackBodies/AllAttackBody/CollisionShape2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_4emrs")
+offset = Vector2(0, -170)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 192
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -172)
+shape = SubResource("RectangleShape2D_4emrs")
+
+[node name="AttackBodies" type="Node2D" parent="."]
+
+[node name="AllAttackBody" type="StaticBody2D" parent="AttackBodies" node_paths=PackedStringArray("Root")]
+collision_layer = 32
+collision_mask = 32
+script = ExtResource("3_acd5h")
+Root = NodePath("../..")
+Type = "All"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackBodies/AllAttackBody"]
+position = Vector2(0, -170)
+shape = SubResource("RectangleShape2D_ddnhd")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+vertices = PackedVector2Array(-178, -80, -87, -157, 22, -163, 125, -155, 184, -52, 139, 5, -30, 14, -149, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -80.25)
+shape = SubResource("RectangleShape2D_acd5h")

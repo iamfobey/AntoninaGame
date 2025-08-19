@@ -1,0 +1,31 @@
+﻿using System;
+using System.ComponentModel;
+
+using Godot;
+
+{{~NSOpen~}}
+{{NSIndent}}partial class {{ClassName}}
+{{NSIndent}}{
+{{~ for action in Actions ~}}
+{{NSIndent}}    /// <summary>The strongly typed input action name that corresponds to the <c>{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
+#if NET6_0_OR_GREATER // Godot 4
+{{NSIndent}}    public static readonly StringName {{action.Item1}} = "{{action.Item2}}";
+#else
+{{NSIndent}}    public static readonly string {{action.Item1}} = "{{action.Item2}}";
+#endif
+{{~ end ~}}
+{{~ for lookup in NestedActions ~}}
+{{NSIndent}}    public static class {{lookup.Key}}
+{{NSIndent}}    {
+{{~ for action in lookup ~}}
+{{NSIndent}}        /// <summary>The strongly typed input action name that corresponds to the <c>{{lookup.Key}}.{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
+#if NET6_0_OR_GREATER // Godot 4
+{{NSIndent}}        public static readonly StringName {{action.Item1}} = "{{action.Item2}}";
+#else
+{{NSIndent}}        public static readonly string {{action.Item1}} = "{{action.Item2}}";
+#endif
+{{~ end ~}}
+{{NSIndent}}    }
+{{~ end ~}}
+{{NSIndent}}}
+{{~NSClose~}}

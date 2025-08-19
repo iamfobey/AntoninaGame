@@ -1,0 +1,236 @@
+﻿using Game.Logic.AI.Arc.FSM;
+using Game.Logic.Components;
+using Game.Logic.Interactive;
+using Game.Utils;
+using Godot;
+
+namespace Game.Logic.AI.Arc
+{
+    public partial class Character : Core.AI.Character
+    {
+        #region GAME METHODS
+        [GameMethod]
+        public override void _ReadyGame()
+        {
+            base._ReadyGame();
+
+            HealthComponent.MaxHealth = MaxHealth;
+            HealthComponent.HealthRegenerationRate = HealthRegenerationRate;
+            HealthComponent.CanRegenerateHealth = CanRegenerateHealth;
+            HealthComponent.CanReceiveDamage = CanReceiveDamage;
+            HealthComponent.CanReceiveHeal = CanReceiveHeal;
+            StaminaComponent.MaxStamina = MaxStamina;
+            StaminaComponent.StaminaRegenerationRate = StaminaRegenerationRate;
+            StaminaComponent.StaminaRegenerationRateMultiplayer = StaminaRegenerationRateMultiplayer;
+            StaminaComponent.CanRegenerateStamina = CanRegenerateStamina;
+            AttackedComponent.IsAttacked = IsAttacked;
+            PoisonedComponent.IsPoisoned = IsPoisoned;
+
+            HealthComponent.ApplyHeal(this, MaxHealth);
+            StaminaComponent.RegenerateStamina(this, MaxStamina);
+
+            HealthBar.Value = HealthComponent.CurrentHealth;
+
+            FSM.RequestState<RunState>();
+        }
+
+        [GameMethod]
+        public override void _PhysicsProcessGame(double delta)
+        {
+            base._PhysicsProcessGame(delta);
+
+            if (CanChangeNavigationPosition && NavAgent.IsTargetReached)
+            {
+                CanChangeNavigationPosition = false;
+
+                if (CurrentAttackToPlayerCount <= MaxAttackToPlayerCount && IsPoisoned)
+                {
+                    NavAgent.SetTarget(NavigationRegion.GetRandomPointRadius(Player.Character.Instance.GlobalPosition,
+                        TargetMinimumDistance,
+                        TargetMaximumDistance));
+                    CurrentAttackToPlayerCount++;
+
+                    FSM.RequestState<AttackState>();
+                }
+                else
+                {
+                    if (CurrentChangePositionCount <= MaxChangePositionCount)
+                    {
+                        NavAgent.SetTarget(NavigationServer2D.MapGetRandomPoint(GetWorld2D().GetNavigationMap(), 1, false));
+                        CurrentChangePositionCount++;
+
+                        FSM.RequestState<RunState>();
+                    }
+                    else
+                    {
+                        CurrentAttackToPlayerCount = 1;
+                        CurrentChangePositionCount = 1;
+                    }
+                }
+            }
+
+            if (CanMoveAndSlide)
+            {
+                MoveComponent.Direction = NavAgent.GetDirection();
+
+                MoveAndCollide(MoveComponent.Velocity * (float)delta);
+            }
+        }
+        #endregion
+
+        #region SIGNAL METHODS
+        [SignalMethod]
+        public async void _OnHealthComponentApplyDamage(Node from, float value)
+        {
+            HealthBar.Value = HealthComponent.CurrentHealth;
+
+            if (from is Player.Character)
+            {
+                if (CanStunOnDamage && !PoisonedComponent.IsPoisoned && !FSM.IsCurrentStateEqual<WalkState>())
+                {
+                    AttackedComponent.Apply(AnimatedSprite);
+
+                    FSM.RequestState<IdleState>();
+                    DamageEffectComponent.EmitDamgaeHit(WaitTimeWhenGotStun);
+                    await ToSignal(GetTree().CreateTimer(WaitTimeWhenGotStun), SceneTreeTimer.SignalName.Timeout);
+                    FSM.RequestState<WalkState>();
+                }
+
+                if (CanRemovePoisonOnHits && PoisonedComponent.IsPoisoned && HealthComponent.DamageHitCount % HitCountToPoison == 0)
+                {
+                    PoisonedComponent.Undo(AnimatedSprite);
+                    AttackedComponent.Undo(AnimatedSprite);
+
+                    FSM.RequestState<IdleState>();
+                    DamageEffectComponent.EmitDamgaeHit(WaitTimeWhenChangeToNormal);
+                    await ToSignal(GetTree().CreateTimer(WaitTimeWhenChangeToNormal), SceneTreeTimer.SignalName.Timeout);
+                    FSM.RequestState<RunState>();
+
+                    NavAgent.SetTarget(NavigationServer2D.MapGetRandomPoint(GetWorld2D().GetNavigationMap(), 1, false));
+                }
+            }
+        }
+
+        [SignalMethod]
+        public void _OnHealthComponentApplyHeal(Node from, float value)
+        {
+            HealthBar.Value = HealthComponent.CurrentHealth;
+        }
+
+        [SignalMethod]
+        public async void _OnDirtEntered(Dirt dirt, bool inner)
+        {
+            if (CanChangeSelfToPoisoned && dirt.Type == Dirt.EType.Poison && inner)
+            {
+                PoisonedComponent.Apply(AnimatedSprite);
+
+                FSM.RequestState<IdleState>();
+                await ToSignal(GetTree().CreateTimer(WaitTimeWhenGotPoisoned), SceneTreeTimer.SignalName.Timeout);
+                FSM.RequestState<RunState>();
+
+                NavAgent.SetTarget(NavigationServer2D.MapGetRandomPoint(GetWorld2D().GetNavigationMap(), 1, false));
+            }
+        }
+        #endregion
+
+        #region PUBLIC FIELDS
+        public int CurrentAttackToPlayerCount = 1;
+        public int CurrentChangePositionCount = 1;
+        public bool CanChangeNavigationPosition = false;
+        #endregion
+
+        #region EDITOR FIELDS
+        [ExportGroup("Base")]
+        [Export]
+        public NavigationRegion2D NavigationRegion;
+        [Export]
+        public ProgressBar HealthBar;
+        [ExportGroup("Components")]
+        [Export]
+        public AttackedComponent AttackedComponent;
+        [Export]
+        public PoisonedComponent PoisonedComponent;
+        [ExportGroup("Sockets")]
+        [Export]
+        public Node2D SnotSocket;
+
+        [ExportCategory("Parameters")]
+        [ExportGroup("Character Logic")]
+        [Export]
+        public int MaxAttackToPlayerCount = 2;
+        [Export]
+        public int MaxChangePositionCount = 2;
+        [Export]
+        public Vector2 MinPlayerTargetPositionLSide = new(400.0f, 400.0f);
+        [Export]
+        public Vector2 MaxPlayerTargetPositionLSide = new(650.0f, 650.0f);
+        [Export]
+        public Vector2 MinPlayerTargetPositionRSide = new(400.0f, 400.0f);
+        [Export]
+        public Vector2 MaxPlayerTargetPositionRSide = new(650.0f, 650.0f);
+        [Export]
+        public float WaitTimeWhenGotStun = 2.0f;
+        [Export]
+        public float WaitTimeWhenChangeToNormal = 2.0f;
+        [Export]
+        public float WaitTimeWhenGotPoisoned = 2.0f;
+        [Export]
+        public int HitCountToPoison = 3;
+        [Export]
+        public bool CanStunOnDamage = true;
+        [Export]
+        public bool CanRemovePoisonOnHits = true;
+        [Export]
+        public bool CanChangeSelfToPoisoned = true;
+        [ExportGroup("FSM")]
+        [ExportSubgroup("AttackState")]
+        [Export]
+        public float PreAttackWaitTime = 0.2f;
+        [Export]
+        public float AnimationAttackWaitTime = 0.37f;
+        [Export]
+        public float PostAttackWaitTime = 0.4f;
+        [Export]
+        public float AttackDamageValue = 5.0f;
+        [Export]
+        public float TargetMinimumDistance = 500.0f;
+        [Export]
+        public float TargetMaximumDistance = 1400.0f;
+        [Export]
+        public bool ShouldProjectileDestroyOnAI = true;
+        [ExportSubgroup("RunState")]
+        [Export]
+        public float RunSpeed = 350.0f;
+        [ExportSubgroup("WalkState")]
+        [Export]
+        public float WalkSpeed = 200.0f;
+        [ExportGroup("Components")]
+        [ExportSubgroup("HealthComponent")]
+        [Export]
+        public float MaxHealth = 100.0f;
+        [Export]
+        public float HealthRegenerationRate = 5.0f;
+        [Export]
+        public bool CanRegenerateHealth = false;
+        [Export]
+        public bool CanReceiveDamage = true;
+        [Export]
+        public bool CanReceiveHeal = true;
+        [ExportSubgroup("StaminaComponent")]
+        [Export]
+        public float MaxStamina = 100.0f;
+        [Export]
+        public float StaminaRegenerationRate = 10.0f;
+        [Export]
+        public float StaminaRegenerationRateMultiplayer = 1.005f;
+        [Export]
+        public bool CanRegenerateStamina = false;
+        [ExportSubgroup("AttackComponent")]
+        [Export]
+        public bool IsAttacked = false;
+        [ExportSubgroup("PoisonedComponent")]
+        [Export]
+        public bool IsPoisoned = false;
+        #endregion
+    }
+}

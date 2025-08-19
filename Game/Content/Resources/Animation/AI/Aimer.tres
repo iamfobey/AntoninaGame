@@ -1,0 +1,102 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://dtlfss86uia5e"]
+
+[ext_resource type="Texture2D" uid="uid://pys10ipj0fg0" path="res://Game/Content/Assets/Textures/Animation/AI/Aimer/Aimer.png" id="1_dx5ww"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Attack_Backward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Attack_Forward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Attack_Left",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Attack_Right",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Idle_Backward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Idle_Forward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Idle_Left",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Idle_Right",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Run_Backward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Run_Forward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Run_Left",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dx5ww")
+}],
+"loop": true,
+"name": &"Run_Right",
+"speed": 30.0
+}]

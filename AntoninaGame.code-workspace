@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "./"
+		}
+	],
+	"settings": {
+		"dotnet.defaultSolution": "./AntoninaGame.sln",
+		"dotnet.automaticallyCreateSolutionInWorkspace": false,
+		"dotnet.preferVisualStudioCodeFileSystemWatcher": true,
+		"dotnet.codeLens.enableReferencesCodeLens": false,
+		"editor.codeLens": false,
+		"dotnet.codeLens.enableTestsCodeLens": false
+	},
+	"extensions": {
+		"recommendations": [
+			"neikeq.godot-csharp-vscode",
+			"ms-dotnettools.csharp",
+			"ionutvmi.path-autocomplete",
+			"alfish.godot-files"
+		]
+	}
+}

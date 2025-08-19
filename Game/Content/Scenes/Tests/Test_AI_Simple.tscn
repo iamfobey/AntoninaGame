@@ -1,0 +1,308 @@
+[gd_scene load_steps=20 format=3 uid="uid://dw1oo2wfcadps"]
+
+[ext_resource type="PackedScene" uid="uid://d3oghssyunoms" path="res://Game/Content/Prefabs/Core/Player.tscn" id="1_m8kk5"]
+[ext_resource type="PackedScene" uid="uid://b4qnfqokoiyxs" path="res://Game/Content/Prefabs/Core/AI/Simple.tscn" id="5_uhuao"]
+[ext_resource type="PackedScene" uid="uid://bj3xxrksshtlv" path="res://Game/Content/Prefabs/Core/Dirt.tscn" id="8_3frqy"]
+[ext_resource type="Texture2D" uid="uid://bikbcpyudkbrt" path="res://Game/Content/Assets/Textures/Interactive/Dirt/Poison.png" id="9_uhkkm"]
+[ext_resource type="Texture2D" uid="uid://clfdb7tdayaxa" path="res://Game/Content/Assets/Textures/Interactive/Dirt/Heal.png" id="10_yfyo4"]
+[ext_resource type="Texture2D" uid="uid://esx5r708wqws" path="res://Game/Content/Assets/Textures/Scenes/Room/Wall_Back.png" id="11_2dlq5"]
+[ext_resource type="Texture2D" uid="uid://cxcqwtgtarox3" path="res://Game/Content/Assets/Textures/Scenes/Room/Floor.png" id="12_tlyhx"]
+[ext_resource type="Texture2D" uid="uid://cl28ionq642ly" path="res://Game/Content/Assets/Textures/Scenes/Room/Wall_L.png" id="13_7gd8s"]
+[ext_resource type="Texture2D" uid="uid://buj26p7y338hd" path="res://Game/Content/Assets/Textures/Scenes/Room/Wall_R.png" id="14_0xw62"]
+[ext_resource type="Texture2D" uid="uid://be3fprgxjn6in" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Door_2A.png" id="15_ok0p8"]
+[ext_resource type="Texture2D" uid="uid://bujf1wvenfh" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Door_Chemistry.png" id="16_s55u8"]
+[ext_resource type="Texture2D" uid="uid://cxjmcuv0swula" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Wall_Back.png" id="17_scb6m"]
+[ext_resource type="Texture2D" uid="uid://c22l7ei32yqip" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Floor.png" id="18_yvvxm"]
+[ext_resource type="Texture2D" uid="uid://dpls0hj2injvc" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Wall_L.png" id="19_yx6lb"]
+[ext_resource type="Texture2D" uid="uid://0m8ufvruha7s" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Wall_R.png" id="20_p36ud"]
+[ext_resource type="Texture2D" uid="uid://bveld4slufvrr" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Door_L.png" id="21_a61k7"]
+[ext_resource type="Texture2D" uid="uid://c0f8rfe1byofp" path="res://Game/Content/Assets/Textures/Scenes/Level_1/Door_R.png" id="22_mhcx6"]
+[ext_resource type="PackedScene" uid="uid://nmbijne5lago" path="res://Game/Content/Prefabs/UI/HUD/HUD.tscn" id="23_oodad"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_aokua"]
+vertices = PackedVector2Array(7912.25, 717.406, 7921.43, 1704.97, -4924.2, 1699.02, -4911.37, 726.359, -3517.21, -439, 6516.35, -439.992)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-3539, -499, -4971, 698, -4985, 1759, 7982, 1765, 7972, 689, 6538, -500)])
+parsed_geometry_type = 0
+agent_radius = 60.0
+
+[node name="Root" type="Node2D"]
+
+[node name="Characters" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="Characters" instance=ExtResource("1_m8kk5")]
+position = Vector2(1170, 220)
+AttackTimeScale = 1.2
+DashTimeScale = 1.2
+WalkSpeed = 525.0
+RunSpeed = 800.0
+MaxStamina = 10000.0
+
+[node name="AI" type="Node2D" parent="Characters"]
+y_sort_enabled = true
+
+[node name="Simple" parent="Characters/AI" node_paths=PackedStringArray("NavigationRegion") instance=ExtResource("5_uhuao")]
+position = Vector2(6950, 1272)
+HitCountToPoison = 4
+NavigationRegion = NodePath("../../../Scene/Level_1/NavigationRegion2D")
+
+[node name="NavAgentInitTarget" type="Node2D" parent="Characters/AI/Simple"]
+position = Vector2(-1042, -445)
+
+[node name="Interactive" type="Node2D" parent="."]
+
+[node name="Dirt1" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-3002, -323)
+
+[node name="Dirt2" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(3193, -30)
+
+[node name="Dirt3" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-2383, 491)
+
+[node name="Dirt4" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(3975, 1126)
+
+[node name="Dirt5" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(1777, 1012)
+
+[node name="Dirt6" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(5782, -87)
+
+[node name="Dirt7" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(6132, 906)
+texture = ExtResource("9_uhkkm")
+Type = 1
+
+[node name="Dirt8" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(3974, 10)
+texture = ExtResource("9_uhkkm")
+Type = 1
+
+[node name="Dirt9" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-584, 897)
+texture = ExtResource("9_uhkkm")
+Type = 1
+
+[node name="Dirt10" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-2158, -98)
+texture = ExtResource("9_uhkkm")
+Type = 1
+
+[node name="Dirt12" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-2766, 1138)
+texture = ExtResource("9_uhkkm")
+Type = 1
+
+[node name="Dirt13" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-21, -75)
+texture = ExtResource("9_uhkkm")
+Type = 1
+
+[node name="Dirt14" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(2917, 576)
+texture = ExtResource("9_uhkkm")
+Type = 1
+
+[node name="Dirt15" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(5174, 1161)
+texture = ExtResource("9_uhkkm")
+Type = 1
+
+[node name="Dirt16" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(6343, -312)
+texture = ExtResource("9_uhkkm")
+Type = 1
+
+[node name="Dirt17" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(5018, 391)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt18" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(6772, 258)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt19" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(2724, 1183)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt20" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(2398, 43)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt21" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(1096, 1183)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt22" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-428, 332)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt23" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-1723, 428)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt24" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-1414, -154)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt28" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-3526, 21)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt29" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-4293, 1420)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt30" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(139, 1341)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt31" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(1341, 573)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt32" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(2168, 1410)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt33" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(3626, 514)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt34" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(4463, 563)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt25" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-2049, 1198)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt26" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-2974, 399)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt27" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-2974, 399)
+texture = ExtResource("10_yfyo4")
+Type = 2
+
+[node name="Dirt11" parent="Interactive" instance=ExtResource("8_3frqy")]
+position = Vector2(-3921, 825)
+texture = ExtResource("9_uhkkm")
+Type = 1
+
+[node name="Scene" type="Node2D" parent="."]
+
+[node name="Room" type="Node2D" parent="Scene"]
+position = Vector2(-7341, -372)
+
+[node name="WallBack" type="Sprite2D" parent="Scene/Room"]
+position = Vector2(-1432, -4400)
+texture = ExtResource("11_2dlq5")
+
+[node name="Floor_1" type="Sprite2D" parent="Scene/Room"]
+position = Vector2(-4529, -3189)
+texture = ExtResource("12_tlyhx")
+offset = Vector2(1729, 489)
+
+[node name="Floor_2" type="Sprite2D" parent="Scene/Room"]
+position = Vector2(-4529, -3189)
+texture = ExtResource("12_tlyhx")
+offset = Vector2(4729, 489)
+
+[node name="Wall_L" type="Sprite2D" parent="Scene/Room"]
+position = Vector2(-3340, -3650)
+texture = ExtResource("13_7gd8s")
+
+[node name="Wall_R" type="Sprite2D" parent="Scene/Room"]
+position = Vector2(740, -3650)
+texture = ExtResource("14_0xw62")
+
+[node name="Level_1" type="Node2D" parent="Scene"]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="Scene/Level_1"]
+visible = false
+navigation_polygon = SubResource("NavigationPolygon_aokua")
+
+[node name="Door_2A" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(5122, -950)
+texture = ExtResource("15_ok0p8")
+
+[node name="Door_2A2" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(-2882, -950)
+texture = ExtResource("15_ok0p8")
+
+[node name="Door_Chimestry" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(1125, -950)
+texture = ExtResource("16_s55u8")
+
+[node name="WallBack_1" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(1128, -1149)
+texture = ExtResource("17_scb6m")
+
+[node name="WallBack_2" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(5128, -1149)
+texture = ExtResource("17_scb6m")
+
+[node name="WallBack_3" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(-2872, -1149)
+texture = ExtResource("17_scb6m")
+
+[node name="Floor_1" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(-3360, 631)
+scale = Vector2(1, 1.88)
+texture = ExtResource("18_yvvxm")
+
+[node name="Floor_2" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(3120, 631)
+scale = Vector2(1, 1.88)
+texture = ExtResource("18_yvvxm")
+
+[node name="Floor_4" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(-120, 631)
+scale = Vector2(1, 1.88)
+texture = ExtResource("18_yvvxm")
+
+[node name="Floor_3" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(6360, 631)
+scale = Vector2(1, 1.88)
+texture = ExtResource("18_yvvxm")
+
+[node name="Wall_L" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(-4260, -599)
+texture = ExtResource("19_yx6lb")
+
+[node name="Wall_R" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(7260, -600)
+texture = ExtResource("20_p36ud")
+
+[node name="Door_L" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(-4209, -364)
+texture = ExtResource("21_a61k7")
+
+[node name="Door_R" type="Sprite2D" parent="Scene/Level_1"]
+position = Vector2(6903, -608)
+texture = ExtResource("22_mhcx6")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="UI" instance=ExtResource("23_oodad")]

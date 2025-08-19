@@ -1,0 +1,104 @@
+[gd_resource type="SpriteFrames" load_steps=4 format=3 uid="uid://dhca3bgkcu3q4"]
+
+[ext_resource type="Texture2D" uid="uid://nudpgy3r4qae" path="res://Game/Content/Assets/Textures/Animation/AI/Sniper/Attack_1.png" id="1_v0fns"]
+[ext_resource type="Texture2D" uid="uid://b7nt7vj8ox3t6" path="res://Game/Content/Assets/Textures/Animation/AI/Sniper/Idle.png" id="2_w86u6"]
+[ext_resource type="Texture2D" uid="uid://dq7nu1t4atj4d" path="res://Game/Content/Assets/Textures/Animation/AI/Sniper/Run.png" id="3_w86u6"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_v0fns")
+}],
+"loop": true,
+"name": &"Attack_Backward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_v0fns")
+}],
+"loop": true,
+"name": &"Attack_Forward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_v0fns")
+}],
+"loop": true,
+"name": &"Attack_Left",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_v0fns")
+}],
+"loop": true,
+"name": &"Attack_Right",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_w86u6")
+}],
+"loop": true,
+"name": &"Idle_Backward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_w86u6")
+}],
+"loop": true,
+"name": &"Idle_Forward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_w86u6")
+}],
+"loop": true,
+"name": &"Idle_Left",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_w86u6")
+}],
+"loop": true,
+"name": &"Idle_Right",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_w86u6")
+}],
+"loop": true,
+"name": &"Run_Backward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_w86u6")
+}],
+"loop": true,
+"name": &"Run_Forward",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_w86u6")
+}],
+"loop": true,
+"name": &"Run_Left",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_w86u6")
+}],
+"loop": true,
+"name": &"Run_Right",
+"speed": 30.0
+}]

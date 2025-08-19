@@ -1,0 +1,56 @@
+<Project Sdk="Godot.NET.Sdk/4.4.0">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Company>Studio613</Company>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <LangVersion>12</LangVersion>
+        <Nullable>disable</Nullable>
+        <NoWarn>$(NoWarn);CS8669;CS8618;MSB3052;</NoWarn>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <DefineConstants>GODOT;GODOT_WINDOWS;GODOT_PC;GODOT4;GODOT4_3;GODOT4_3_0;GODOT4_OR_GREATER;GODOT4_0_OR_GREATER;
+            GODOT4_1_OR_GREATER;GODOT4_2_OR_GREATER;GODOT4_3_OR_GREATER;GODOT4_3_0_OR_GREATER;TRACE;TOOLS;LOGGER_DEBUG;IMGUI;
+        </DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'ExportDebug' ">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <DefineConstants>GODOT;GODOT_WINDOWS;GODOT_PC;GODOT4;GODOT4_3;GODOT4_3_0;GODOT4_OR_GREATER;GODOT4_0_OR_GREATER;
+            GODOT4_1_OR_GREATER;GODOT4_2_OR_GREATER;GODOT4_3_OR_GREATER;GODOT4_3_0_OR_GREATER;TRACE;DEBUG;LOGGER_DEBUG;IMGUI;
+        </DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'ExportRelease' ">
+        <DefineConstants>GODOT;GODOT_WINDOWS;GODOT_PC;GODOT4;GODOT4_3;GODOT4_3_0;GODOT4_OR_GREATER;GODOT4_0_OR_GREATER;GODOT4_1_OR_GREATER;
+            GODOT4_2_OR_GREATER;GODOT4_3_OR_GREATER;GODOT4_3_0_OR_GREATER;TRACE;IMGUI;
+        </DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include=".gitattributes"/>
+        <Content Include=".gitignore"/>
+        <Content Include="Game\Code\Scripts\**"/>
+        <Content Include="export_presets.cfg"/>
+        <Content Include="project.godot"/>
+        <Content Include="README.md"/>
+        <Content Include="Setup.bat"/>
+        <Content Include="Update.bat"/>
+        <Content Include="nuget.config"/>
+        <Content Include="AntoninaGame.csproj"/>
+        <Content Include="AntoninaGame.sln"/>
+        <Content Include="AntoninaGame.code-workspace"/>
+        <Content Include="AntoninaGame.sln.DotSettings"/>
+        <Content Include="AntoninaGame.sln.DotSettings.user"/>
+        <Content Include="Game\Content\**"/>
+        <Content Remove="Game\Content\Misc\Editor\Build\**\*"/>
+        <Content Remove="Game\Content\Misc\Editor\Build\"/>
+        <Compile Remove="Game\Code\Plugins\**"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="GodotSharp.SourceGenerators" Version="1.0.0-local"/>
+        <PackageReference Include="ZLinq.Godot" Version="1.4.9"/>
+        <PackageReference Include="ImGui.NET" Version="1.91.6.1"/>
+    </ItemGroup>
+</Project>

@@ -1,0 +1,16 @@
+[remap]
+
+importer="spine.atlas"
+type="SpineAtlasResource"
+uid="uid://c7wq8gv2h0cmc"
+path="res://.godot/imported/Antinona.atlas-3099e82a46aa096d7963d2a38cc1b0da.spatlas"
+
+[deps]
+
+source_file="res://Game/Content/Assets/Animations/Antinona.atlas"
+dest_files=["res://.godot/imported/Antinona.atlas-3099e82a46aa096d7963d2a38cc1b0da.spatlas"]
+
+[params]
+
+normal_map_prefix="n"
+specular_map_prefix="s"
